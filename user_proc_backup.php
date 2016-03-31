@@ -38,31 +38,26 @@
 				$today_total += $tmp["PRICE"];
 			}
 
-			$query = "insert into proc_data values (0, ".$vars["USER_ID"].",'".date( "Y-m-d H:i:s" )."', 0,".$vars["CAT"].",".$vars["TOTAL"].",1)";
-			$db->query( $query ); 
-			$today_total += $vars["CAT"] * 1;
-			$user_data["BALANCE"] = ( $user_data["BALANCE"] * 1 + $vars["CAT"] * 1 );
-			$query = "update user_data set BALANCE = ".$user_data["BALANCE"]." where RECORD_ID=".$vars["USER_ID"];
-			$db->query( $query ); 
+			$item_data = array();
+			if( array_key_exists( "ITEM_ID", $vars ) ){
+				$tmpItemId = str_replace( "item", "", $vars["ITEM_ID"] );
+				$item_data = $db->getRow( "select * from item_data where RECORD_ID=".$tmpItemId, DB_FETCHMODE_ASSOC );
+				$query = "insert into proc_data values (0, ".$vars["USER_ID"].",'".date( "Y-m-d H:i:s" )."', ".$tmpItemId.",".$item_data["PRICE"].",1)";
+				$db->query( $query ); 
+				$today_total += $item_data["PRICE"] * 1;
+				$user_data["BALANCE"] = ( $user_data["BALANCE"] * 1 - $item_data["PRICE"] * 1 );
+				$query = "update user_data set BALANCE = ".$user_data["BALANCE"]." where RECORD_ID=".$vars["USER_ID"];
+				$db->query( $query ); 
 
+			}
 			$db->disconnect();
 ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <div style="width:100%;text-align:center;">
+今月の決済可能残額:￥<?php print number_format( $user_data["P_LIMIT"]*1 - $user_data["BALANCE"]*1 ); ?><br />
+今日の決済合計:￥<?php print number_format( $today_total*1 ); ?><br />
 <br />
-ありがとうございました。<br />
-<br />
-<?php print date("Y/m/d H:i"); ?><br />
-<br />
-<table border="0" align="center" style="font-size:30px;">
-<tr><td align="right">お会計　</td><td align="right">￥<?php print number_format( $vars["TOTAL"]*1 ); ?></td></tr>
-<tr><td align="right">割引　</td><td align="right">￥<?php print number_format( $vars["CAT"]*1 ); ?></td></tr>
-<tr><td align="right">お支払　</td><td align="right">￥<?php print number_format( $vars["TOTAL"]*1 - $vars["CAT"]*1 ); ?></td></tr>
-</table>
---------------------------------------<br />
-食べコミュ残高 ￥<?php print number_format( $user_data["P_LIMIT"]*1 - $user_data["BALANCE"]*1 ); ?><br />
-<br />
-<button class="btn" onclick="javascript:BackProc3();">終了する</botton>
+<?php if( array_key_exists( "PRICE", $item_data ) ){ ?>ただいまの決済:￥<?php print number_format( $item_data["PRICE"]*1 ); ?><?php } ?><br />
 </div>
 <?php
 		$db->disconnect();

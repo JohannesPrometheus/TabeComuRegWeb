@@ -110,17 +110,9 @@ function showHistory(){
 		heightBuffer =  $('#calc_area').height();
 		$('#calc_area').css('overflow','hidden');
 		$('#calc_area').height(0);
-		$('#history_area').height(heightBuffer);
-		$('#history_area').load('http://gtl.jp/asp/tabecomu/disp_history.php');
+		$('#code_area').height(heightBuffer);
+		$('#disp_code_area').load('http://gtl.jp/asp/tabecomu/disp_history.php');
 }
-
-function historyBack(){
-		heightBuffer =  $('#history_area').height();
-		$('#history_area').css('overflow','hidden');
-		$('#history_area').height(0);
-		$('#calc_area').height(heightBuffer);
-}
-
 </script>
 <div id="code_area" style="text-align:center;">
 	<div id="disp_code_area">

@@ -42,14 +42,18 @@ function goProc2(cat){
 }
 </script>
 <div style="width:100%;text-align:center;font-size:20px;">
-<div id="cat_area" style="width:100%;text-align:center;font-size:20px;">
-今回のお支払い：<?php print "￥".number_format( $vars["TOTAL"] ); ?><br />
-今回の適用分：<?php print "￥".number_format( $vars["CAT"] ); ?><br />
+<div id="cat_area" style="width:100%;text-align:center;font-size:30px;">
+
+<table border="0" align="center" style="font-size:30px;">
+<tr><td align="right">お会計　</td><td align="right">￥<?php print number_format( $vars["TOTAL"]*1 ); ?></td></tr>
+<tr><td align="right">割引　</td><td align="right">￥<?php print number_format( $vars["CAT"]*1 ); ?></td></tr>
+<tr><td align="right">お支払　</td><td align="right">￥<?php print number_format( $vars["TOTAL"]*1 - $vars["CAT"]*1 ); ?></td></tr>
+</table>
 <br />
-これでよろしいですか？<br />
+金額をご確認ください。<br />
 <br />
-<button class="btn" onclick="javacript:goProc2();">決定</button><br />
-<button class="btn" onclick="javacript:backProc();">中止</button><br />
+<button class="btn" onclick="javacript:goProc2();">OK</button><br />
+<button class="btn" onclick="javacript:backProc();">訂正</button><br />
 </div>
 <div id="result_area"></div>
 </div>

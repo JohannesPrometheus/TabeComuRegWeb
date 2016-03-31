@@ -34,16 +34,19 @@
 
 			$db->disconnect();
 
-			print "PROC_ID:".$vars["PROC_ID"]."<br />";
 ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <div style="width:100%;text-align:center;">
-ただいまの決済:￥<?php print number_format( $proc_data["PRICE"]*1 ); ?>(￥<?php print number_format( $proc_data["TOTAL_PRICE"]*1 ); ?>中)<br />
+<table border="0" align="center" style="font-size:30px;">
+<tr><td align="right">お会計　</td><td align="right">￥<?php print number_format( $proc_data["TOTAL_PRICE"]*1 ); ?></td></tr>
+<tr><td align="right">割引　</td><td align="right">￥<?php print number_format( $proc_data["PRICE"]*1 ); ?></td></tr>
+<tr><td align="right">お支払　</td><td align="right">￥<?php print number_format( $proc_data["TOTAL_PRICE"]*1 - $proc_data["PRICE"]*1 ); ?></td></tr>
+</table>
 <br />
-これでよろしいですか？<br />
+お手数ですがもう一度ご確認ください。<br />
 <br />
-<button class="btn" onclick="javacript:DoneProc(1, <?php print $vars["PROC_ID"]; ?>);" style="width:360px;">決定</button><br />
-<button class="btn" onclick="javacript:DoneProc(2, <?php print $vars["PROC_ID"]; ?>);" style="width:360px;">中止</button><br />
+<button class="btn" onclick="javacript:DoneProc(1, <?php print $vars["PROC_ID"]; ?>);" style="width:360px;">割引を使う</button><br />
+<button class="btn" onclick="javacript:DoneProc(2, <?php print $vars["PROC_ID"]; ?>);" style="width:360px;">取り消し</button><br />
 <br />
 </div>
 <?php

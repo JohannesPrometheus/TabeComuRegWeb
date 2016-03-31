@@ -44,15 +44,21 @@
 			$db->disconnect();
 ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<div style="width:100%;text-align:center;font-size:20px;">
+<div style="width:100%;text-align:center;font-size:30px;">
 <br />
 <?php if( $vars["DONE_MODE"] == 1 ){ ?>
-実行しました。<br />
+ありがとうございました。<br />
+<br />
+<table border="0" align="center" style="font-size:30px;">
+<tr><td align="right">お会計　</td><td align="right">￥<?php print number_format( $proc_data["TOTAL_PRICE"]*1 ); ?></td></tr>
+<tr><td align="right">割引　</td><td align="right">￥<?php print number_format( $proc_data["PRICE"]*1 ); ?></td></tr>
+<tr><td align="right">お支払　</td><td align="right">￥<?php print number_format( $proc_data["TOTAL_PRICE"]*1 - $proc_data["PRICE"]*1 ); ?></td></tr>
+</table>
 <?php }else{ ?>
 中止しました。<br />
 <?php } ?>
 <br />
-<button class="btn" onclick="javacript:BackProc();" style="width:360px;">戻る</button><br />
+<button class="btn" style="margin-top:240px;width:300px;" onclick="javacript:BackProc();">新規お会計</button><br />
 <br />
 </div>
 <script>

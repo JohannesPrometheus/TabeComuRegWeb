@@ -41,12 +41,12 @@ function goProc(cat){
 	$('#result_area').load('http://gtl.jp/asp/tabecomu/confirm_proc.php?SHOP_ID=1&USER_ID=<?php print $vars["USER_ID"]; ?>&CAT='+cat+'&TOTAL=<?php print $vars["TOTAL"]; ?>');
 }
 </script>
-<div style="width:100%;text-align:center;font-size:20px;">
-<div id="cat_area" style="text-align:center;font-size:20px;">
-適用額を選んでください。<br />
-￥<?php print number_format( $vars["TOTAL"] ); ?>中<br />
-<?php for( $ct = $user_data["S_LIMIT"]; $ct > 0; $ct -= 100 ){ ?>
-<button class="btn" onclick="javascript:goProc(<?php print $ct; ?>);"><?php print $ct; ?></button><br />
+<div style="width:100%;text-align:center;font-size:30px;">
+<div id="cat_area" style="text-align:center;font-size:30px;">
+利用額を選択してください。<br />
+お会計　￥<?php print number_format( $vars["TOTAL"] ); ?><br />
+<?php for( $ct = 100; $ct < 600; $ct += 100 ){ ?>
+<button class="btn" style="font-size:30px;" onclick="javascript:goProc(<?php print $ct; ?>);"><?php print $ct; ?></button><br />
 <?php } ?>
 </div>
 <div id="result_area"></div>
