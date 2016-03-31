@@ -9,9 +9,15 @@
 	require_once "Pager/Pager.php";
 	require_once "DB.php";
 
-	$authobj = new Auth("DB", $dsnMember, "memberLogin");
+		$vars = GetFormVars();
+
+$order_data["order_pay"] = 0;
+$order_data["order_salary_pay"] = 0;
+$order_data["order_company_pay"] = 0;
 
 	/*
+	$authobj = new Auth("DB", $dsnMember, "memberLogin");
+
 	$authobj->setSessionname (CMS_MEMBER_SESSION);
 	$authobj->start();
 
@@ -23,8 +29,6 @@
 	}
 
 	if( $authobj->getAuth() ){
-	*/
-		$vars = GetFormVars();
 		$option = "";
 		$db = DB::connect( $dsnDB, $option );
 			$db->query( "SET NAMES UTF8" );
@@ -42,8 +46,25 @@
 			$db->query( $query );
 
 			$db->disconnect();
+	*/
 ?>
-  <div class="container">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>食べコミュレジ</title>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8" src="barcodescanner.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/earlyaccess/notosansjapanese.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
+<body>
+  <div class="container" style="border:1px red solid;">
     <div class="btn_home_box">
       <button class="btn btn_home" onClick="document.location='index.html'"><img src="images/ico_home.png" alt="最初のページへ" width="32"></button>  
     </div>
@@ -62,16 +83,16 @@
       <table class="pay" style="width:434px;">
         <tr>
           <th style="width:334px;">ご利用金額</th>
-          <td style="width:100px;padding-right:7px;">￥<?php print number_format( $order_data["order_salary_pay"] + $order_data["order_company_pay"] + $order_data["order_pay"] ); ?></td>
+          <td style="width:100px;">￥<?php print number_format( $order_data["order_salary_pay"] + $order_data["order_company_pay"] + $order_data["order_pay"] ); ?></td>
         </tr>
         <tr>
           <th style="width:334px;padding-left:0px;">食べコミュご利用額</th>
-          <td style="width:100px;padding-right:7px;">￥<?php print number_format(  $order_data["order_company_pay"] *1 ); ?></td>
+          <td style="width:100px;">￥<?php print number_format(  $order_data["order_company_pay"] *1 ); ?></td>
         </tr>
 <?php if( $order_data["order_salary_pay"] * 1 != 0 ){ ?>
         <tr>
           <th style="width:334px;">後払い額</th>
-          <td style="width:100px;padding-right:7px;">￥<?php print number_format( $order_data["order_salary_pay"] ); ?></td>
+          <td style="width:100px;">￥<?php print number_format( $order_data["order_salary_pay"] ); ?></td>
         </tr>
 <?php } ?>
         <tr style="height:1px;">
@@ -80,7 +101,7 @@
         </tr>
         <tr style="border-top: 1px solid #111;">
           <th style="width:334px;padding-top: 20px;">計</th>
-          <td style="width:100px;padding-right:7px;">￥<?php print number_format( $order_data["order_pay"] ); ?></td>
+          <td style="width:100px;">￥<?php print number_format( $order_data["order_pay"] ); ?></td>
         </tr>
       </table>
 
@@ -109,6 +130,8 @@
 	$('#check_area').html('');
 	tester = "";
 </script>
+</body>
+</html>
 <?php
 	//}
 ?>

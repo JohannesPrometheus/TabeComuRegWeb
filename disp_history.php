@@ -26,6 +26,7 @@
 	if( $authobj->getAuth() ){
 	*/
 		$vars = GetFormVars();
+
 		$option = "";
 		$db = DB::connect( $dsnDB, $option );
 		$db->query( "SET NAMES UTF8" );
@@ -43,13 +44,20 @@
 			if($vars['companyBox'] != "指定しない"){
 				$companyId = $vars['companyBox'];
 			}
+		}
+		if(isset($vars['TIME_START_YEAR'])) {
 			$startTime = $vars['TIME_START_YEAR'] . "-" . $vars['TIME_START_MONTH'] . "-" . $vars['TIME_START_DAY'];
+		}
+		if(isset($vars['TIME_END_YEAR'])) {
 			$endTime = $vars['TIME_END_YEAR'] . "-" . $vars['TIME_END_MONTH'] . "-" . $vars['TIME_END_DAY'];
 		}
 
-		$query = "SELECT * FROM `order`";
+		$query = "SELECT * FROM `shop` WHERE shop_code='".$vars["shop_code"]."'";
+		$shop_data = $db->getRow( $query, DB_FETCHMODE_ASSOC );
+
+		$query = "SELECT * FROM `order` WHERE shop_code='".$vars["shop_code"]."'";
 		if($startTime != ""){
-			$query .= " WHERE shop_code='".$vars["shop_code"]."' AND order_day BETWEEN '" . $startTime . "' AND '" . $endTime."'";
+			$query .= "  AND order_day BETWEEN '" . $startTime . "' AND '" . $endTime."'";
 			if($companyId != ""){
 				$query .= " AND company_code = '" . $companyId . "'";
 			}
@@ -59,10 +67,10 @@
 		$allData = $db->getAll($query, DB_FETCHMODE_ASSOC);
 
 		$total = 0;
-		$companyPay = 0;
+		$urikake = 0;
 		foreach( $allData as $tmp ){
 			$total += $tmp["order_company_pay"] + $tmp["order_salary_pay"] + $tmp["order_pay"];
-			$companyPay += $tmp["order_company_pay"];
+			$urikake += $tmp["order_company_pay"] + $tmp["order_salary_pay"];
 		}
 		reset( $allData );
 
@@ -77,52 +85,69 @@
 		$item_data = $pager->GetPageData();
 		$db->disconnect();
 
-		if( $startTime == "" ) $startTime = date("Y-m-d", strtotime( date( "Y-m-d" )." - 1year" ) );
+		if( $startTime == "" ){
+			$startTime = date("Y-m-d", strtotime( date( "Y-m-d" )." - 1year" ) );
+		}
 		if( $endTime == "" ) $endTime = date( "Y-m-d" );
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>管理画面</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="http://fonts.googleapis.com/earlyaccess/notosansjapanese.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <script type="text/javascript">
-function ifOpen(url){
-	$('.iframe')[0].open(url,'_self');
+function ChangeMonthLastDay(str){
+	var year_str	= 'TIME_'+str+'_YEAR';
+	var month_str	= 'TIME_'+str+'_MONTH';
+	var day_str	= 'TIME_'+str+'_DAY';
+
+	var tmp_year	= $('#'+year_str).val();
+	var tmp_month	= $('#'+month_str).val();
+	var tmp_day	= $('#'+day_str).val();
+
+	var last_day	= new Date(tmp_year, tmp_month, 0).getDate();
+
+	for(var i=0; i < document.getElementById(day_str).options.length; i++){
+		document.getElementById(day_str).options[i] = null;
+	}
+	var onum = 0;
+	var ostr = '';
+	for(var i=0; i < last_day; i++){
+		onum = i+1;
+		ostr = ("0"+onum).slice(-2);
+		document.getElementById(day_str).options[i] = new Option(ostr,ostr);
+	}
+	$('#'+day_str).val(tmp_day);
 }
 </script>
-<style type="text/css">
-select { font-size:20px; }
-</style>
-<div style="width:100%;text-align:center;margin-top:20px;">
 
-	<form id="form1" name="form1" method="post" action="http://gtl.jp/asp/tabecomu2/disp_history.php" target="history_window">
-	<input type="hidden" id="shop_code" name="shop_code" value="<?php print $vars["shop_code"]; ?>">
-	<div style="margin-bottom:10px;">
-<?php
-	if( false ){
-?>
-		企業/団体様：<select id="companyBox" name="companyBox">
-		<option>指定しない</option>
-		<?php
-			foreach($companyData as $value){
-				$select = "";
-				if($companyId == $value['company_code']){ 
-					$select = "selected=\"selected\"";
-				}
-		?>
-			<option value="<?php echo $value['company_code'] ?>" <?php echo $select ?>><?php echo $value['company_name'] ?></option>
-		<?php
-			}
-		?>
-		</select>
-<?php
-	}
-?>
-	</div>
+</head>
 
-	<div>
-		開始：
-		<select id="TIME_START_YEAR" name="TIME_START_YEAR">
+<body>
+<div class="container">
+    
+    <!--<div class="logo_small_box">
+      <img src="images/logo.jpg" alt="食べコミュ" width="120">
+    </div>-->
+
+<form id="form1" name="form1" method="post" action="http://gtl.jp/asp/tabecomu3/disp_history.php" target="history_window">
+<input type="hidden" id="shop_code" name="shop_code" value="<?php print $vars["shop_code"]; ?>">
+    
+    <div class="price_box" style="width:500px;margin-bottom:0px;">
+<div style="font-size:20px;margin-bottom:20px;"><?php print $shop_data["shop_name"]; ?>さま</div>
+<div style="font-size:24px;margin-bottom:20px;">ご利用履歴</div>
+
+		<p><select id="TIME_START_YEAR" name="TIME_START_YEAR" onchange="ChangeMonthLastDay('START');">
 		<?php for( $ct = 2014; $ct < 2017; $ct ++  ){ ?>
 		<option value="<?php print sprintf( "%04d", $ct ); ?>"<?php if( date("Y", strtotime($startTime) ) == sprintf( "%04d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%04d", $ct ); ?></option>
 		<?php } ?>
 		</select>/
-		<select id="TIME_START_MONTH" name="TIME_START_MONTH">
+		<select id="TIME_START_MONTH" name="TIME_START_MONTH" onchange="ChangeMonthLastDay('START');">
 		<?php for( $ct = 1; $ct < 13; $ct ++  ){ ?>
 		<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("m", strtotime($startTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
 		<?php } ?>
@@ -131,14 +156,14 @@ select { font-size:20px; }
 		<?php for( $ct = 1; $ct < 32; $ct ++  ){ ?>
 		<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("d", strtotime($startTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
 		<?php } ?>
-		</select>より<br />
-		終了：
-		<select id="TIME_END_YEAR" name="TIME_END_YEAR">
+		</select><span class="font_14">より</span>
+                </p>
+		<p><select id="TIME_END_YEAR" name="TIME_END_YEAR" onchange="ChangeMonthLastDay('END');">
 		<?php for( $ct = 2014; $ct < 2017; $ct ++  ){ ?>
 		<option value="<?php print sprintf( "%04d", $ct ); ?>"<?php if( date("Y", strtotime($endTime) ) == sprintf( "%04d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%04d", $ct ); ?></option>
 		<?php } ?>
 		</select>/
-		<select id="TIME_END_MONTH" name="TIME_END_MONTH">
+		<select id="TIME_END_MONTH" name="TIME_END_MONTH" onchange="ChangeMonthLastDay('END');">
 		<?php for( $ct = 1; $ct < 13; $ct ++  ){ ?>
 		<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("m", strtotime($endTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
 		<?php } ?>
@@ -147,56 +172,72 @@ select { font-size:20px; }
 		<?php for( $ct = 1; $ct < 32; $ct ++  ){ ?>
 		<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("d", strtotime($endTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
 		<?php } ?>
-		</select>まで<br />
-	</div>
-	<button class="btn" style="width:300px;margin-top:14px;height:40px;font-size:20px;" type="submit">検索</button><br />
-	</form>
+		</select><span class="font_14">まで</span>
 
-	<table border="0" align="center" style="font-size:20px; width:300px;margin-top:10px;">
-	<tr style="border: 1px gray dotted;">
-	<td style="background-color:#CCCCCC;padding:2px;text-align:center;">合計</td>
-	<td style="border-bottom: 1px black dotted;width:50%;text-align:right;"><?php print number_format( $total ); ?></td>
-	</tr>
-	<tr style="border: 1px gray dotted;">
-	<td style="background-color:#CCCCCC;padding:2px;text-align:center;">割引額</td>
-	<td style="border-bottom: 1px black dotted;width:50%;text-align:right;"><?php print number_format( $companyPay ); ?></td>
-	</tr>
-	</table>
+    </div>
+        
+    
+    <div class="btn_scan_box">
+      <button class="btn btn_scan font_14" type="submit">ご利用履歴表示</button>
+    </div>
 
-	<table border="0" align="center" style="font-size:16px;margin-top:10px;padding:6px;">
-	<tr style="border: 1px gray dotted;">
-	<td style="background-color:#CCCCCC;padding:6px;text-align:center;">日時</td>
-	<td style="background-color:#CCCCCC;padding:6px;text-align:center;">決済ID</td>
-	<td style="background-color:#CCCCCC;padding:6px;text-align:center;">総額</td>
-	<td style="background-color:#CCCCCC;padding:6px;text-align:center;">法人</td>
-	<td style="background-color:#CCCCCC;padding:6px;text-align:center;">天引</td>
-	<td style="background-color:#CCCCCC;padding:6px;text-align:center;">現金</td>
-	</tr>
+</form>
+    
+    <div class="price_box" style="width:400px;">
+      <table class="total font_14" style="width:400px;">
+        <tr>
+        <th>ご利用金額総計</th>
+        <td style="text-align:right;margin-right:10px;"><?php print number_format( $total ); ?></th>
+        </tr>
+        <tr>
+          <th>売掛計</th>
+          <td style="text-align:right;margin-right:10px;"><?php print number_format( $urikake ); ?></td>
+        </tr>
+      </table>
+      
+    </div>
+    
+    <div class="sum_box">
+      <table class="total font_14 sum" style="font-size:16px;">
+        <tr>
+        <th style="padding:4px;width:100px;text-align:center;">日時</th>
+        <th style="padding:4px;width:40px;">決済ID</th>
+        <th style="padding:4px;width:60px;">ご利用金額</th>
+        <th style="padding:4px;width:40px;">売掛</th>
+        <th style="padding:4px;width:40px;">現金</th>
+        </tr>
 	<?php
-		//reset( $item_data );
+		reset( $item_data );
 		foreach($item_data as $tmp){
 	?>
-	<tr style="border-bottom: 1px gray dotted;">
-	<td style="border-bottom: 1px gray dotted;padding:6px;"><?php print date( "y/m/d H:i", strtotime( $tmp["order_day"] ) ); ?></td>
-	<td style="border-bottom: 1px gray dotted;padding:6px;"><?php print sprintf( "%06d", $tmp["order_id"] ); ?></td>
-	<td style="border-bottom: 1px gray dotted;padding:6px;text-align:right;"><?php print number_format( $tmp["order_company_pay"] + $tmp["order_salary_pay"] + $tmp["order_pay"] ); ?></td>
-	<td style="border-bottom: 1px gray dotted;padding:6px;text-align:right;"><?php print number_format( $tmp["order_company_pay"] ); ?></td>
-	<td style="border-bottom: 1px gray dotted;padding:6px;text-align:right;"><?php print number_format( $tmp["order_salary_pay"] ); ?></td>
-	<td style="border-bottom: 1px gray dotted;padding:6px;text-align:right;"><?php print number_format( $tmp["order_pay"] ); ?></td>
-	</tr>
+        <tr>
+          <td style="padding:4px;width:100px;text-align:center;"><?php print date( "y/m/d H:i", strtotime( $tmp["order_day"] ) ); ?></td>
+          <td style="padding:4px;width:40px;text-align:center;"><?php print sprintf( "%06d", $tmp["order_id"] ); ?></td>
+          <td style="padding:4px;width:60px;"><?php print number_format( $tmp["order_company_pay"] + $tmp["order_salary_pay"] + $tmp["order_pay"] ); ?></td>
+          <td style="padding:4px;width:40px;"><?php print number_format( $tmp["order_company_pay"] + $tmp["order_salary_pay"] ); ?></td>
+          <td style="padding:4px;width:40px;"><?php print number_format( $tmp["order_pay"] ); ?></td>
+        </tr>
 	<?php
 		}
 	?>
-	</table>
-
-	<table border="0" align="center" style="font-size:20px; width:300px;">
-	<tr>
-	<td style="width:40%;text-align:left;"><button class="btn" style="width:120px;margin-top:10px;height:40px;font-size:20px;" onclick="javascript:window.open('disp_history.php?<?php reset( $vars ); while( list( $key, $val ) = each( $vars ) ) { if( $key != "pageID" ){ print "&".$key."=".$val; } } ?>&pageID=<?php print $pager->getPreviousPageID(); ?>','_self');">前の5件</button></td>
-	<td style="width:20%;text-align:center;padding:3px;"><?php print $pager->getCurrentPageID(); ?>/<?php print $pager->numPages(); ?></td>
-	<td style="width:40%;text-align:right;"><button class="btn" style="width:120px;margin-top:10px;height:40px;font-size:20px;" onclick="javascript:window.open('disp_history.php?<?php reset( $vars ); while( list( $key, $val ) = each( $vars ) ) { if( $key != "pageID" ){ print "&".$key."=".$val; } } ?>&pageID=<?php print $pager->getNextPageID(); ?>','_self');">次の5件</button></td>
-	</tr>
-	</table>
+      </table>
+      
+      <div class="pg_box">
+        <ul>
+          <li><button class="btn btn_pg" onclick="javascript:window.open('disp_history.php?<?php reset( $vars ); while( list( $key, $val ) = each( $vars ) ) { if( $key != "pageID" ){ print "&".$key."=".$val; } } ?>&pageID=<?php print $pager->getPreviousPageID(); ?>','_self');">前の5件</button></li>
+          <li class="pg_total"><?php print $pager->getCurrentPageID(); ?>/<?php print $pager->numPages(); ?></li>
+          <li><button class="btn btn_pg" onclick="javascript:window.open('disp_history.php?<?php reset( $vars ); while( list( $key, $val ) = each( $vars ) ) { if( $key != "pageID" ){ print "&".$key."=".$val; } } ?>&pageID=<?php print $pager->getNextPageID(); ?>','_self');">次の5件</button></li>
+<!--<li><a href="test.php">　</a></li>//-->
+        </ul>
+      </div>
+       
 </div>
+<script>
+ChangeMonthLastDay('START');
+ChangeMonthLastDay('END');
+</script>
+</body>
+</html>
 <?php
 		$db->disconnect();
 	//}

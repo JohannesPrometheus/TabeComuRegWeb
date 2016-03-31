@@ -1,0 +1,312 @@
+/* 
+html5doctor.com Reset Stylesheet
+v1.6.1
+Last Updated: 2010-09-17
+Author: Richard Clark - http://richclarkdesign.com 
+Twitter: @rich_clark
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+/* change border colour to suit your needs */
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+    vertical-align:middle;
+    font-size: small;
+}
+
+a {
+	text-decoration: none;
+	color: #4dbbdf;
+}
+a:hover {
+  color: #72dcff;
+}
+ul,
+ol {
+	list-style-position: inside;
+	list-style: none;
+}
+input {
+  -webkit-appearance: none;
+  box-sizing: border-box;
+}
+select {
+  font-size: 24px;
+}
+/* style */
+
+body, button, input, select, option, textarea {
+/*font-family: 'Noto Sans Japanese', serif;*/
+  font-family: sans-serif;
+}
+.container {
+  width: 600px;
+  margin: 0 auto;
+}
+.logo_box {
+  margin: 80px auto 30px;
+  text-align: center;
+}
+.logo_small_box {
+  margin: 0 auto 30px;
+  text-align: center;
+}
+.logo_box img {
+  width: 320px;
+}
+.btn_sale_box {
+  width: 400px;
+  margin: 50px auto;
+  text-align: center;
+}
+.btn_mng_box {
+  width: 400px;
+  margin: 0 auto;
+  text-align: right;
+}
+.qr_box {
+  width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+.price_box {
+  width: 400px;
+  margin: 40px auto;
+  text-align: center;
+}
+.sum_box {
+  width: 600px;
+  margin: 40px auto;
+  text-align: center;
+}
+.pg_box {
+  width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.price_box p {
+  margin: 0 0 20px;
+  font-size: 24px
+}
+.btn {
+  border: none;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+.btn_sale {
+  width: 320px;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 5px;
+  background-color: #2d61A5;
+  font-size: 24px;
+}
+.btn_mng,
+.btn_home {
+  padding: 15px 20px;
+  background: #f6f6f6;
+  border-radius: 3px;
+}
+.btn_home_box {
+  margin: 20px 0 0 20px;
+}
+.input_common {
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+}
+.input_price_box,
+.input_id_box {
+  width: 100%;
+  margin: 0 auto 20px;
+  text-align: center;
+}
+.form_price {
+  width: 320px;
+  padding: 10px;
+  font-size: 48px;
+  text-align: right;
+  vertical-align: middle;
+  color: #000;
+}
+.form_id {
+  width: 280px;
+  padding: 10px;
+  font-size: 24px;
+  vertical-align: middle;
+  color: #000;
+}
+.btn_modi_box,
+.btn_num_box,
+.btn_scan_box {
+  width: 340px;
+  margin: 0 auto 20px;
+  text-align: center;
+}
+.btn_num_box {
+  margin-bottom: 0;
+}
+.btn_num_box_row {
+  margin-left: 20px;
+}
+.btn_num_box_last {
+  text-align: left;
+}
+.btn_modi {
+  width: 280px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #e05200;
+  font-size: 24px;
+}
+.btn_num {
+  margin: 0 20px 20px 0;
+  padding: 15px 25px;
+  background: #f6f6f6;
+  border-radius: 3px;
+  color: #111;
+  font-size: 48px;
+}
+
+.btn_ok {
+  padding: 15px 56px;
+  border-radius: 5px;
+  background-color: #2d61A5;
+  font-size: 48px;
+}
+.btn_scan {
+  width: 280px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #2d61A5;
+  font-size: 24px;
+}
+.pay,
+.total {
+  width: 240px;
+  margin: 0 auto 30px;
+  font-size: 24px;
+}
+.pay th {
+  width: 160px;
+  padding: 10px 0 10px 0;
+  text-align: right;
+  font-weight: normal;
+}
+.pay td {
+  padding-left: 50px;
+  text-align: right;
+}
+
+.total {
+  border-collapse: collapse;
+  border: 1px solid #eee;
+}
+.total th {
+  width:160px;
+  padding: 10px;
+  background: #f6f6f6;
+  border: 1px solid #eee;
+} 
+.total td {
+  padding: 10px;
+  border: 1px solid #eee;
+}
+.font_14 {
+  font-size: 14px;
+}
+.sum {
+  width: 500px;
+}
+.sum th {
+  font-size: 12px;
+}
+.sum td {
+  text-align: right;
+}
+.pg_box ul {
+  text-align: center;
+}
+.pg_box li {
+  display: inline;
+}
+.btn_pg {
+  padding: 10px 40px;
+  background: #f6f6f6;
+  border-radius: 5px;
+  color: #111;
+}

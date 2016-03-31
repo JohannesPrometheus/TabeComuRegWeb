@@ -1,8 +1,10 @@
 <html>
-<body>
-<form name="form3" id="form3" method="POST" action="http://gtl.jp/asp/tabecomu2/disp_history2.php">
+<body style="text-align:center;">
+<form name="form3" id="form3" method="POST" action="http://gtl.jp/asp/tabecomu3/login_proc.php">
 <input type="text" name="username" id="username"><br />
+<br />
 <input type="password" name="password" id="password"><br />
+<br />
 <input type="submit" value="ログイン">
 </form>
 </body>

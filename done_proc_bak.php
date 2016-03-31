@@ -34,7 +34,7 @@
 
 			if( $vars["DONE_MODE"] == 1 ){
 				$query = "update `order` set order_confirm_date='".date("Y-m-d H:i:s")."' where order_id=".$vars["order_id"];
-			}else if( $vars["DONE_MODE"] == 2 ){
+			}else{
 				$query = "delete from `order` where order_id=".$vars["order_id"];
 			}
 			//print "DONE_MODE: ".$vars["DONE_MODE"]."<br />";
@@ -56,38 +56,24 @@
 	if( $vars["DONE_MODE"] == 1 ){ 
 ?>
         
-    <div class="price_box" style="width:434px;">
+    <div class="price_box" style="width:400px;">
       <p>ありがとうございました</p>
-      
-      <table class="pay" style="width:434px;">
+      <table class="pay" style="width:400px;">
         <tr>
-          <th style="width:334px;">ご利用金額</th>
-          <td style="width:100px;padding-right:7px;">￥<?php print number_format( $order_data["order_salary_pay"] + $order_data["order_company_pay"] + $order_data["order_pay"] ); ?></td>
+          <th style="width:300px;">ご利用金額</th>
+          <td style="width:100px;">￥<?php print number_format( $order_data["order_salary_pay"] + $order_data["order_company_pay"] + $order_data["order_pay"] ); ?></td>
         </tr>
         <tr>
-          <th style="width:334px;padding-left:0px;">食べコミュご利用額</th>
-          <td style="width:100px;padding-right:7px;">￥<?php print number_format(  $order_data["order_company_pay"] *1 ); ?></td>
+          <th style="width:300px;">食べコミュ利用額</th>
+          <td style="width:100px;">￥<?php print number_format(  $order_data["order_company_pay"] *1 ); ?></td>
         </tr>
-<?php if( $order_data["order_salary_pay"] * 1 != 0 ){ ?>
         <tr>
-          <th style="width:334px;">後払い額</th>
-          <td style="width:100px;padding-right:7px;">￥<?php print number_format( $order_data["order_salary_pay"] ); ?></td>
-        </tr>
-<?php } ?>
-        <tr style="height:1px;">
-          <th style="width:334px;height:1px;"> </th>
-          <td style="width:100px;height:1px;"> </td>
-        </tr>
-        <tr style="border-top: 1px solid #111;">
-          <th style="width:334px;padding-top: 20px;">計</th>
-          <td style="width:100px;padding-right:7px;">￥<?php print number_format( $order_data["order_pay"] ); ?></td>
+          <th style="width:300px;">お支払い金額</th>
+          <td style="width:100px;">￥<?php print number_format( $order_data["order_salary_pay"] + $order_data["order_pay"] ); ?></td>
         </tr>
       </table>
-
-      <div style="width:100%;font-size:30px;text-align:center;line-height:60px;">
-      <p>お支払い金額</p>
-      <p style="font-size:60px;">￥<?php print number_format( $order_data["order_pay"] ); ?></p>
-	</div>
+      
+      
     </div>
 
 <?php
@@ -101,7 +87,7 @@
 ?>
     
     <div class="btn_scan_box">
-      <button class="btn btn_scan" onclick="javacript:TenkeyProc('AC');BackProc();">ＯＫ</button>
+      <button class="btn btn_scan" onclick="javacript:BackProc();">ＯＫ</button>
     </div>
        
   </div>

@@ -9,10 +9,11 @@
 	require_once "Pager/Pager.php";
 	require_once "DB.php";
 
+	/*
 	$authobj = new Auth("DB", $dsnMember, "memberLogin");
 
 	$authobj->setSessionname (CMS_MEMBER_SESSION);
-	//$authobj->start();
+	$authobj->start();
 
 	if( array_key_exists( "logoutProc", $_GET ) ){
 		if( $_GET["logoutProc"] == "yes" ){
@@ -21,7 +22,8 @@
 		}
 	}
 
-	//if( $authobj->getAuth() ){
+	if( $authobj->getAuth() ){
+	*/
 		$vars = GetFormVars();
 		$option = "";
 		$db = DB::connect( $dsnDB, $option );

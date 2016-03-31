@@ -40,32 +40,9 @@
 
 				if( $this_month < $company_data["company_limited_monthly"] ){
 
-					// ‘æ1Ÿ
 					//$vars["cat"] = $company_data["company_userpay"];
 					//if( $vars["cat"] > $vars["total"] ) $vars["cat"] = $vars["total"];
-					
-					// ‘æ2Ÿ
-					//if( $vars["total"] >= 2 * $company_data["company_userpay"] ){
-					//	$company_pay = $company_data["company_userpay"];
-					//	$user_pay = $vars["total"] - $company_pay;
-					//}else if( $vars["total"] >= $company_data["company_userpay"] ){
-					//	$user_pay = $company_data["company_userpay"];
-					//	$company_pay = $vars["total"] - $user_pay;
-					//}else if($vars["total"] < $company_data["company_userpay"]){
-					//	$user_pay = $vars["total"];
-					//	$company_pay = 0;
-					//}
 
-					// ‘æ3Ÿ
-					//if( $vars["total"] > $company_data["company_userpay"] ){
-					//	$company_pay = $company_data["company_userpay"];
-					//	$user_pay = $vars["total"] - $company_pay;
-					//}else if( $vars["total"] <= $company_data["company_userpay"]){
-					//	$user_pay = 0;
-					//	$company_pay = $vars["total"];
-					//}
-
-					// ‘æ4Ÿi‘æ2Ÿ‚Ì•œŠˆ)
 					if( $vars["total"] >= 2 * $company_data["company_userpay"] ){
 						$company_pay = $company_data["company_userpay"];
 						$user_pay = $vars["total"] - $company_pay;
@@ -73,12 +50,9 @@
 						$user_pay = $company_data["company_userpay"];
 						$company_pay = $vars["total"] - $user_pay;
 					}else if($vars["total"] < $company_data["company_userpay"]){
-						$user_pay = $vars["total"];
-						$company_pay = 0;
+						$user_pay = 0;
+						$company_pay = $vars["total"];
 					}
-
-
-
 					/*
 					$order_data = array( 
 						"order_day"		=> date("Y-m-d H:i:s"),
@@ -91,7 +65,7 @@
 						"company_code"		=> $company_data["company_code"],
 						"company_name"		=> $company_data["company_name"],
 						"user_code"		=> $user_data["user_code"],
-						"user_name"		=> $user_data["user_lastname"]." ".$user_data["user_firstname"],
+						"user_name"		=> $user_data["user_lastname"]."@".$user_data["user_firstname"],
 						"user_barcode"		=> $user_data["user_barcode"]."",
 						"user_paytype"		=> $user_data["user_paytype"],
 						"order_lunch_number"	=> 1,
@@ -108,10 +82,9 @@
 						"company_code"		=> $company_data["company_code"],
 						"company_name"		=> $company_data["company_name"],
 						"user_code"		=> $user_data["user_code"],
-						"user_name"		=> $user_data["user_lastname"]." ".$user_data["user_firstname"],
+						"user_name"		=> $user_data["user_lastname"]."@".$user_data["user_firstname"],
 						"user_barcode"		=> $user_data["user_barcode"]."",
 						"user_paytype"		=> $user_data["user_paytype"],
-						"menu_price"		=> $vars["total"],
 						"order_lunch_number"	=> 1,
 					);
 					/*
