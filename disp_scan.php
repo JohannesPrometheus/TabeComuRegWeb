@@ -9,7 +9,6 @@
 	require_once "Pager/Pager.php";
 	require_once "DB.php";
 
-	/*
 	$authobj = new Auth("DB", $dsnMember, "memberLogin");
 
 	$authobj->setSessionname (CMS_MEMBER_SESSION);
@@ -21,8 +20,9 @@
 			$authobj->start();
 		}
 	}
+
 	if( $authobj->getAuth() ){
-	*/
+
 		$vars = GetFormVars();
 
 		$option = "";
@@ -35,26 +35,20 @@
 
 
 ?>
-<div id="cat_area" class="container">
-    
-    <div class="btn_home_box">
-      <button class="btn btn_home" onClick="javascript: showMenu();"><img src="images/ico_home.png" alt="最初のページへ" width="32"></button>
+    <div class="logo_box_small">
+	<img class="logo_small" src="images/logo.jpg" alt="食べコミュ">
     </div>
     
-    <div class="logo_small_box">
-      <img src="images/logo.jpg" alt="食べコミュ" width="120">
-    </div>
-    
-    <div class="input_id_box">
-      <input type="number" class="input_common form_id" placeholder="ID"  id="user_code_scaned" name="user_code_scaned" onchange="javascript:InputUserCode()";>
+    <div class="btn_box">
+      <input type="number" class="input_common input_user_code middle_text" placeholder="ID" id="user_code_scaned" name="user_code_scaned" onchange="javascript:InputUserCode()";>
       <input type="text" id="user_code_scaned_hide" name="user_code_scaned_hide" onchange="javascript:InputUserCode();" style="width:0px; height:0px;" readonly="readonly">
     </div>
+
+    <div class="btn_box">
+	<button class="btn btn_large btn_large_blue">コード入力</button>
+    </div>
     
-    <div class="btn_scan_box">
-      <button class="btn btn_scan">コード入力</button>
-    </div> 
-    
-    <div class="price_box">
+    <div class="message_box small_text">
       <p>
 	ご利用金額　￥<?php print number_format( $vars["TOTAL"] ); ?><br />
 	<form id="form2" name="form2" action="<?php print URL_ROOT; ?>result2_proc.php" method="post" target="backwindow">
@@ -67,15 +61,22 @@
       </p>
     </div>
     <iframe name="backwindow" id="backwindow" style="border:none;width:1px;height:1px;"></iframe>
-</div>
 
 <script>
 
 var resultTimer;
+var focusTimer;
 var user_code_get;
 
 function InputUserCode(){
-          
+
+	$('#result_area').hide();
+	$('#result_area').height(0);
+
+	$('#calc_area').hide();
+	$('#calc_area').css('overflow', 'hidden');
+	$('#calc_area').height(0);
+
 	NetworkCheck();
 
 	var user_code_tmp = document.getElementById('user_code_scaned').value;
@@ -85,7 +86,7 @@ function InputUserCode(){
 	}
 	user_code_get = document.getElementById('user_code_scaned').value;
 
-	var doc = document.getElementsByTagName("iframe")[1].contentWindow.document;
+	var doc = document.getElementsByTagName("iframe")[0].contentWindow.document;
 	doc.body.innerHTML="";
 
 	var frm = document.getElementById('form2');
@@ -93,37 +94,51 @@ function InputUserCode(){
 	document.getElementById('user_code').value = user_code_get;
 	frm.submit();
 
-	$('#result_area').hide();
-	$('#result_area').height(0);
+	$('#calc_area').hide();
+	$('#calc_area').css('overflow', 'hidden');
+	$('#calc_area').height(0);
 
+	clearTimeout(resultTimer);
 	resultTimer = setTimeout( "ResultWin()", 1000 );
+
+	$('#calc_area').hide();
+	$('#calc_area').css('overflow', 'hidden');
+	$('#calc_area').height(0);
 }
 
 function ResultWin(){
+
+	$('#calc_area').hide();
+	$('#calc_area').css('overflow', 'hidden');
+	$('#calc_area').height(0);
 
 	NetworkCheck();
 
 	clearTimeout(resultTimer);
 
-	var doc = document.getElementsByTagName("iframe")[1].contentWindow.document;
+	var doc = document.getElementsByTagName("iframe")[0].contentWindow.document;
 	var tmp_oid = doc.body.innerHTML;
 
+
 	if(tmp_oid==""){
-		alert("ネットワークに接続されていません。");
+		onsAlert("ネットワークに接続されていません。");
 		showMenu();
 	}else{
 		if( tmp_oid < 0 ){
 			// エラー終了
 			if( tmp_oid == "-1" ){
-				alert("入力されたコードが正しくありません\nコードをご確認ください。");
+				onsAlert("入力されたコードが正しくありません\nコードをご確認ください。","エラー");
 			}else if( tmp_oid == "-2" ){
-				alert("既に今月の食べコミュ利用回数の\n上限に達しています。");
+				onsAlert("既に今月の食べコミュ利用回数の\n上限に達しています。","エラー");
 			}else if( tmp_oid == "-3" ){
-				alert("既に本日の食べコミュ利用回数の\n上限に達しています。");
+				onsAlert("既に本日の食べコミュ利用回数の\n上限に達しています。","エラー");
 			}else if( tmp_oid == "-4" ){
-				alert("店舗IDが正しく取得できませんでした。");
+				onsAlert("店舗IDが正しく取得できませんでした。","エラー");
 				showMenu();
 			}
+
+			$("#camera_button").show();
+
 			document.getElementById('user_code_scaned').text='';
 			document.getElementById('user_code_scaned').value='';
 			document.getElementById('user_code_scaned_hide').readOnly = true;
@@ -131,14 +146,18 @@ function ResultWin(){
 			document.getElementById('user_code_scaned_hide').text='';
 			document.getElementById('user_code_scaned_hide').value='';
 			document.getElementById('user_code_scaned_hide').readOnly = false;
-			$('#result_area').show();
+
 		}else{
 			focusfixFlag = false;
 
-			$('#scan_area').css('overflow','hidden');
+			$('#calc_area').hide();
+			$('#calc_area').css('overflow', 'hidden');
+			$('#calc_area').height(0);
+
+			$('#scan_area').hide(0);
 			$('#scan_area').height(0);
 
-			$('#result_area').load('<?php print URL_ROOT; ?>done_confirm.php?order_id=' + tmp_oid );
+			$('#result_area').load('<?php print URL_ROOT; ?>done_confirm.php?order_id=' + tmp_oid, sizeFitting );
 			$('#result_area').height(heightBuffer);
 		        $("#result_area").delay(1000);
 		        $("#result_area").fadeIn(500);
@@ -147,7 +166,7 @@ function ResultWin(){
 
 }
 function InitResultWin(){
-	var doc = document.getElementsByTagName("iframe")[1].contentWindow.document;
+	var doc = document.getElementsByTagName("iframe")[0].contentWindow.document;
 	doc.body.innerHTML="";
 }
 
@@ -172,17 +191,20 @@ function FocusCheck(){
 			$('#user_code_scaned_hide').attr('readonly',false);
 		}
 	}
+	clearTimeout(focusTimer);
 }
 
+$('#user_code_scaned').css("width", "65%");
+
 $('#user_code_scaned').blur(function(){
-	setTimeout(FocusCheck,500);
+	focusTimer = setTimeout(FocusCheck,500);
 });
 
 $('#user_code_scaned_hide').blur(function(){
-	setTimeout(FocusCheck,500);
+	focusTimer = setTimeout(FocusCheck,500);
 });
 
 </script>
 <?php
-	//}
+	}
 ?>

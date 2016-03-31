@@ -78,22 +78,17 @@
 		}
 		reset( $allData );
 
-		$pagingFlag = false;
-		if( $pagingFlag ){
-			// ページングあり
-			$params = array(
-					"perPage"=>$PAGE_ROWS,
-					"itemData" => $allData
-			);
-			
-			$pager = Pager::factory($params);
-			$navi = $pager -> getLinks();
-			$item_data = $pager->GetPageData();
-			$db->disconnect();
-		}else{
-			// ページングなし
-			$item_data = $allData;
-		}
+		// ページングの設定
+		$params = array(
+				"perPage"=>$PAGE_ROWS,
+				"itemData" => $allData
+		);
+		
+		$pager = Pager::factory($params);
+		$navi = $pager -> getLinks();
+		$item_data = $pager->GetPageData();
+		$db->disconnect();
+
 ?>
 <script type="text/javascript">
 function ChangeMonthLastDay(str){
@@ -207,10 +202,7 @@ function ChangeMonthLastDay(str){
 		}
 	?>
       </table>
-
-<?php
-	if( $pagingFlag ){
-?>
+      
       <div style="width:100%; margin-top:10px; margin-bottom:0px;">
 <?php if( $pager->isFirstPage( $pager->getPreviousPageID() ) ){ $str = "hidden"; }else{ $str = "visible"; } ?>
           <span style="visibility:<?php print $str; ?>"><button class="btn btn_pg" onclick="javascript:historyLoad(0,<?php print $pager->getPreviousPageID(); ?>);">前の<?php print $PAGE_ROWS; ?>件</button></span>
@@ -218,11 +210,7 @@ function ChangeMonthLastDay(str){
 <?php if( $pager->isLastPage( $pager->getNextPageID() ) ){ $str = "hidden"; }else{ $str = "visible"; } ?>
           <span style="visibility:<?php print $str; ?>"><button class="btn btn_pg" onclick="javascript:historyLoad(0,<?php print $pager->getNextPageID(); ?>);">次の<?php print $PAGE_ROWS; ?>件</button></span>
       </div>
-<?php
-	}
-?>
-
-      
+       
 </div>
 <script>
 ChangeMonthLastDay('START');

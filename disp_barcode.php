@@ -26,7 +26,7 @@
 		$vars = GetFormVars();
 ?>
 <div style="width:100%;text-align:center;">
-<img src="<?php print URL_ROOT; ?>qr_img/php/qr_img.php?s=10&d=<?php print $vars["SHOP_ID"]."_".$vars["TOTAL"]; ?>">
+<img src="<?php print URL_ROOT; ?>qr_img/php/qr_img.php?s=10&d=<?php print $vars["SHOP_ID"]."_".$vars["TOTAL"]; ?>" style="width:100%;">
 </div>
 <?php
 	//}

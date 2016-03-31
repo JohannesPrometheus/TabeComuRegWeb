@@ -1,312 +1,238 @@
 /* 
-html5doctor.com Reset Stylesheet
-v1.6.1
-Last Updated: 2010-09-17
-Author: Richard Clark - http://richclarkdesign.com 
-Twitter: @rich_clark
+Last Updated: 2016-03-26
+Author: Genkaido
 */
 
-html, body, div, span, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-abbr, address, cite, code,
-del, dfn, em, img, ins, kbd, q, samp,
-small, strong, sub, sup, var,
-b, i,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section, summary,
-time, mark, audio, video {
-    margin:0;
-    padding:0;
-    border:0;
-    outline:0;
-    font-size:100%;
-    vertical-align:baseline;
-    background:transparent;
-}
 
 body {
-    line-height:1;
+    font-family: Roboto, "Droid Sans", "ü‡ÉSÉVÉbÉNëÃ", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+    text-align:center;
+    margin: 0px;
+    padding: 0px;
 }
 
-article,aside,details,figcaption,figure,
-footer,header,hgroup,menu,nav,section { 
-    display:block;
+.main_area {
+    margin: 0px;
+    padding: 0px;
+    width:100%;
 }
 
-nav ul {
-    list-style:none;
+.stage_area {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    border: none;
 }
 
-blockquote, q {
-    quotes:none;
+.price_bar {
+    padding:2px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:25%;
+    margin-bottom:0%;
+    width: 80%;
+    height: 80%;
+    text-align: right;
+    vertical-align: middle;
+    color: #000;
+    border: 1px solid #e1e1e1;
+
 }
 
-blockquote:before, blockquote:after,
-q:before, q:after {
-    content:'';
-    content:none;
+.logo_box_small{
+    margin-top:6%;
+    width:100%;
+    margin-bottom:6%;
 }
 
-a {
-    margin:0;
-    padding:0;
-    font-size:100%;
-    vertical-align:baseline;
-    background:transparent;
+.logo_small {
+    width:30%;
 }
 
-del {
-    text-decoration: line-through;
-}
-
-abbr[title], dfn[title] {
-    border-bottom:1px dotted;
-    cursor:help;
-}
-
-table {
-    border-collapse:collapse;
-    border-spacing:0;
-}
-
-/* change border colour to suit your needs */
-hr {
-    display:block;
-    height:1px;
-    border:0;   
-    border-top:1px solid #cccccc;
-    margin:1em 0;
-    padding:0;
-}
-
-input, select {
-    vertical-align:middle;
-    font-size: small;
-}
-
-a {
-	text-decoration: none;
-	color: #4dbbdf;
-}
-a:hover {
-  color: #72dcff;
-}
-ul,
-ol {
-	list-style-position: inside;
-	list-style: none;
-}
-input {
-  -webkit-appearance: none;
-  box-sizing: border-box;
-}
-select {
-  font-size: 24px;
-}
-/* style */
-
-body, button, input, select, option, textarea {
-/*font-family: 'Noto Sans Japanese', serif;*/
-  font-family: sans-serif;
-}
-.container {
-  width: 600px;
-  margin: 0 auto;
-}
-.logo_box {
-  margin: 80px auto 30px;
-  text-align: center;
-}
-.logo_small_box {
-  margin: 0 auto 30px;
-  text-align: center;
-}
-.logo_box img {
-  width: 320px;
-}
-.btn_sale_box {
-  width: 400px;
-  margin: 50px auto;
-  text-align: center;
-}
-.btn_mng_box {
-  width: 400px;
-  margin: 0 auto;
-  text-align: right;
-}
 .qr_box {
-  width: 400px;
-  margin: 0 auto;
-  text-align: center;
-}
-.price_box {
-  width: 400px;
-  margin: 40px auto;
-  text-align: center;
-}
-.sum_box {
-  width: 600px;
-  margin: 40px auto;
-  text-align: center;
-}
-.pg_box {
-  width: 600px;
-  margin: 0 auto;
-  text-align: center;
+    width:40%;
+    margin:0px auto 6% auto;
+    border:1px lightgray solid;
 }
 
-.price_box p {
-  margin: 0 0 20px;
-  font-size: 24px
+.price_box {
+    width:60%;
+    margin:0px auto 6% auto;
+    text-algin:center;
 }
+
+.version_box {
+    position:absolute;
+    top:90%;
+    left:6%;
+    text-align:left;
+    width:40%;
+    height:3%;
+    margin-left:0px;
+    margin-right:auto;
+}
+
+.message_box {
+    margin: 0% auto 6% auto;
+    width:80%;
+}
+
+.btn_box {
+    width:100%;
+    height:12%;
+    margin-bottom:4%;
+}
+
 .btn {
   border: none;
   color: #fff;
   text-align: center;
   cursor: pointer;
 }
-.btn_sale {
-  width: 320px;
-  margin: 50px auto;
-  padding: 30px;
-  border-radius: 5px;
-  background-color: #2d61A5;
-  font-size: 24px;
+
+.btn_large {
+  width: 80%;
 }
-.btn_mng,
-.btn_home {
-  padding: 15px 20px;
-  background: #f6f6f6;
-  border-radius: 3px;
+
+.btn_large_blue {
+    background-color: #2d61A5;
 }
-.btn_home_box {
-  margin: 20px 0 0 20px;
+
+.btn_large_red {
+    background-color: #e05200;
 }
-.input_common {
-  border: 1px solid #e1e1e1;
-  border-radius: 5px;
-}
-.input_price_box,
-.input_id_box {
-  width: 100%;
-  margin: 0 auto 20px;
-  text-align: center;
-}
-.form_price {
-  width: 320px;
-  padding: 10px;
-  font-size: 48px;
-  text-align: right;
-  vertical-align: middle;
-  color: #000;
-}
-.form_id {
-  width: 280px;
-  padding: 10px;
-  font-size: 24px;
-  vertical-align: middle;
-  color: #000;
-}
-.btn_modi_box,
-.btn_num_box,
-.btn_scan_box {
-  width: 340px;
-  margin: 0 auto 20px;
-  text-align: center;
-}
-.btn_num_box {
-  margin-bottom: 0;
-}
-.btn_num_box_row {
-  margin-left: 20px;
-}
-.btn_num_box_last {
-  text-align: left;
-}
-.btn_modi {
-  width: 280px;
-  padding: 20px;
-  border-radius: 5px;
-  background-color: #e05200;
-  font-size: 24px;
-}
+
+
+
 .btn_num {
-  margin: 0 20px 20px 0;
-  padding: 15px 25px;
-  background: #f6f6f6;
-  border-radius: 3px;
-  color: #111;
-  font-size: 48px;
+    width:25%;
+    margin: 0 20% 20% 0;
+    padding: 5% 2%;
+    background: #f6f6f6;
+    color: #111;
 }
 
-.btn_ok {
-  padding: 15px 56px;
-  border-radius: 5px;
-  background-color: #2d61A5;
-  font-size: 48px;
-}
-.btn_scan {
-  width: 280px;
-  padding: 20px;
-  border-radius: 5px;
-  background-color: #2d61A5;
-  font-size: 24px;
-}
-.pay,
-.total {
-  width: 240px;
-  margin: 0 auto 30px;
-  font-size: 24px;
-}
-.pay th {
-  width: 160px;
-  padding: 10px 0 10px 0;
-  text-align: right;
-  font-weight: normal;
-}
-.pay td {
-  padding-left: 50px;
-  text-align: right;
+.btn_num_left {
+    margin-left:auto;
+    margin-right:5%;
 }
 
-.total {
-  border-collapse: collapse;
-  border: 1px solid #eee;
+.btn_num_middle {
+    margin-left:0px;
+    margin-right:5%;
 }
-.total th {
-  width:160px;
-  padding: 10px;
-  background: #f6f6f6;
-  border: 1px solid #eee;
-} 
-.total td {
-  padding: 10px;
-  border: 1px solid #eee;
+
+.btn_num_right{
+    margin-left:0px;
+    margin-right:auto;
 }
-.font_14 {
-  font-size: 14px;
+
+.btn_num_ok{
+    margin-left:0px;
+    margin-right:auto;
+    width:56%;
+    color:#ffffff;
+    background-color: #2d61A5;
 }
-.sum {
-  width: 500px;
-}
-.sum th {
-  font-size: 12px;
-}
-.sum td {
-  text-align: right;
-}
-.pg_box ul {
+
+.small_icon {
+  border: none;
+  color: #fff;
   text-align: center;
+  cursor: pointer;
+  background-color:#eeeeee;
 }
-.pg_box li {
-  display: inline;
+
+.small_icon_img{
+
 }
-.btn_pg {
-  padding: 10px 40px;
-  background: #f6f6f6;
-  border-radius: 5px;
-  color: #111;
+
+.logout_button{
+  z-index:1000;
+  font-size:80%;
+  margin-top:6%;
+  height:5%;
+  width:30%;
+  border: none;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  background-color:#ddd;
 }
+
+.management_button{
+  position:absolute;
+  z-index:1000;
+  border: none;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  background-color:#ddd;
+}
+
+.home_button{
+  position:absolute;
+  z-index:1000;
+  border: none;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  background-color:#ddd;
+}
+
+.input_common {
+  border: 1px solid gray;
+}
+
+.input_user_code {
+  width:70%;
+  height:60%;
+}
+
+.small_text {
+    font-size:10px;
+}
+
+.middle_text {
+    font-size:10px;
+}
+
+.large_text {
+    font-size:10px;
+}
+
+.strong_text {
+    font-size:10px;
+}
+
+.table_text {
+    font-size:10px;
+}
+
+.price_table {
+    margin:0 auto 6% auto;
+    width:80%;
+    border-collapse:collapse;
+}
+
+.price_table th {
+    width:70%;
+    font-weight:normal;
+    text-align:right;
+    padding-top:3%;
+}
+
+.price_table td {
+    width:30%;
+    text-align:right;
+    padding-top:3%;
+}
+
+.price_table .lined_tr {
+    border-top:1px gray solid;
+}
+
+
+

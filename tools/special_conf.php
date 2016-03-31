@@ -1,5 +1,5 @@
 <?php
-define("DIST_NAME", "tabecomu4n");
+define("DIST_NAME", "tabecomu4sp");
 define("FILE_SYSTEM_ROOT", "/home/sites/heteml/users/g/e/n/genkaido/web/gtl.jp/asp/".DIST_NAME."/");
 define("DOCUMENT_ROOT", "/asp/".DIST_NAME."/");
 define("URL_ROOT", "http://gtl.jp/asp/".DIST_NAME."/");
