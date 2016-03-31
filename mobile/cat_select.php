@@ -37,8 +37,8 @@
 function goProc(cat){
 	$('#cat_area').css( 'overflow', 'hidden' );
 	$('#cat_area').height(0);
-	alert( 'http://gtl.jp/asp/tabecomu3/mobile/confirm_proc.php?SHOP_ID=<?php print $vars["SHOP_ID"]; ?>&USER_ID=<?php print $vars["USER_ID"]; ?>&CAT='+cat+'&TOTAL=<?php print $vars["TOTAL"]; ?>' );
-	$('#result_area').load('http://gtl.jp/asp/tabecomu3/mobile/confirm_proc.php?SHOP_ID=<?php print $vars["SHOP_ID"]; ?>&USER_ID=<?php print $vars["USER_ID"]; ?>&CAT='+cat+'&TOTAL=<?php print $vars["TOTAL"]; ?>' );
+	alert( 'http://gtl.jp/asp/tabecomu4/mobile/confirm_proc.php?SHOP_ID=<?php print $vars["SHOP_ID"]; ?>&USER_ID=<?php print $vars["USER_ID"]; ?>&CAT='+cat+'&TOTAL=<?php print $vars["TOTAL"]; ?>' );
+	$('#result_area').load('http://gtl.jp/asp/tabecomu4/mobile/confirm_proc.php?SHOP_ID=<?php print $vars["SHOP_ID"]; ?>&USER_ID=<?php print $vars["USER_ID"]; ?>&CAT='+cat+'&TOTAL=<?php print $vars["TOTAL"]; ?>' );
 }
 </script>
 <div style="width:100%;text-align:center;font-size:30px;">

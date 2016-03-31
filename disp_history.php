@@ -135,7 +135,7 @@ function ChangeMonthLastDay(str){
       <img src="images/logo.jpg" alt="食べコミュ" width="120">
     </div>-->
 
-<form id="form1" name="form1" method="post" action="http://gtl.jp/asp/tabecomu3/disp_history.php" target="history_window">
+<form id="form1" name="form1" method="post" action="http://gtl.jp/asp/tabecomu4/disp_history.php" target="history_window">
 <input type="hidden" id="shop_code" name="shop_code" value="<?php print $vars["shop_code"]; ?>">
     
     <div class="price_box" style="width:500px;margin-bottom:0px;">

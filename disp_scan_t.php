@@ -57,7 +57,7 @@
     <div class="price_box">
       <p>
 	ご利用金額　￥<?php print number_format( $vars["TOTAL"] ); ?><br />
-	<form id="form2" name="form2" action="http://gtl.jp/asp/tabecomu3/result2_proc_t.php" method="post" target="backwindow">
+	<form id="form2" name="form2" action="http://gtl.jp/asp/tabecomu4/result2_proc_t.php" method="post" target="backwindow">
 		<input type="hidden" id="shop_code" name="shop_code" value="<?php print $vars["shop_code"]; ?>">
 		<input type="hidden" id="total" name="total" value="<?php print $vars["TOTAL"]; ?>">
 		<input type="hidden" id="cat" name="cat">
@@ -121,7 +121,7 @@ function ResultWin(){
 		$('#scan_area').css('overflow','hidden');
 		$('#scan_area').height(0);
 
-		$('#result_area').load('http://gtl.jp/asp/tabecomu3/done_confirm.php?order_id=' + tmp_oid );
+		$('#result_area').load('http://gtl.jp/asp/tabecomu4/done_confirm.php?order_id=' + tmp_oid );
 		$('#result_area').height(heightBuffer);
 	        $("#result_area").delay(1000);
 	        $("#result_area").fadeIn(500);

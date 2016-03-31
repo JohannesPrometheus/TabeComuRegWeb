@@ -26,7 +26,7 @@
 		$vars = GetFormVars();
 ?>
 <div style="width:100%;text-align:center;">
-<img src="http://gtl.jp/asp/tabecomu3/qr_img/php/qr_img.php?s=10&d=<?php print $vars["SHOP_ID"]."_".$vars["TOTAL"]; ?>">
+<img src="http://gtl.jp/asp/tabecomu4/qr_img/php/qr_img.php?s=10&d=<?php print $vars["SHOP_ID"]."_".$vars["TOTAL"]; ?>">
 </div>
 <?php
 	//}
