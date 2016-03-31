@@ -2,8 +2,8 @@
 
 	$pathForRoot = "./";
 
-	require_once $pathForRoot."tools/special_conf.php";
-	require_once $pathForRoot."tools/system_tools.php";
+	require_once $pathForRoot."tools2/special_conf.php";
+	require_once $pathForRoot."tools2/system_tools.php";
 
 	require_once "Auth/Auth.php";
 	require_once "Pager/Pager.php";
@@ -29,24 +29,24 @@
 		$db = DB::connect( $dsnDB, $option );
 			$db->query( "SET NAMES UTF8" );
 
-			$proc_data = $db->getRow( "select * from proc_data where RECORD_ID=".$vars["PROC_ID"], DB_FETCHMODE_ASSOC );
-			$user_data = $db->getRow( "select * from user_data where RECORD_ID=".$proc_data["USER_ID"], DB_FETCHMODE_ASSOC );
+			$order_data = $db->getRow( "select * from `order` where order_id=".$vars["order_id"], DB_FETCHMODE_ASSOC );
+
+			$user_data = $db->getRow( "select * from user where user_code='".$order_data["user_code"]."'", DB_FETCHMODE_ASSOC );
 
 			$db->disconnect();
 
 ?>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<div style="width:100%;text-align:center;">
+<div style="width:100%;text-align:center;margin-top:20px;">
 <table border="0" align="center" style="font-size:30px;">
-<tr><td align="right">お会計　</td><td align="right">￥<?php print number_format( $proc_data["TOTAL_PRICE"]*1 ); ?></td></tr>
-<tr><td align="right">割引　</td><td align="right">￥<?php print number_format( $proc_data["PRICE"]*1 ); ?></td></tr>
-<tr><td align="right">お支払　</td><td align="right">￥<?php print number_format( $proc_data["TOTAL_PRICE"]*1 - $proc_data["PRICE"]*1 ); ?></td></tr>
+<tr><td align="right">お会計　</td><td align="right">￥<?php print number_format( $order_data["order_salary_pay"] + $order_data["order_company_pay"] + $order_data["order_pay"] ); ?></td></tr>
+<tr><td align="right">割引　</td><td align="right">￥<?php print number_format(  $order_data["order_company_pay"] *1 ); ?></td></tr>
+<tr><td align="right">お支払　</td><td align="right">￥<?php print number_format( $order_data["order_salary_pay"] + $order_data["order_pay"] ); ?></td></tr>
 </table>
 <br />
 お手数ですがもう一度ご確認ください。<br />
 <br />
-<button class="btn" onclick="javacript:DoneProc(1, <?php print $vars["PROC_ID"]; ?>);" style="width:360px;">割引を使う</button><br />
-<button class="btn" onclick="javacript:DoneProc(2, <?php print $vars["PROC_ID"]; ?>);" style="width:360px;">取り消し</button><br />
+<button class="btn_long" onclick="javacript:DoneProc(1, <?php print $vars["order_id"]; ?>);" style="width:360px;">割引を使う</button><br />
+<button class="btn_long" onclick="javacript:DoneProc(2, <?php print $vars["order_id"]; ?>);" style="width:360px;">取り消し</button><br />
 <br />
 </div>
 <?php

@@ -10,7 +10,7 @@
 	require_once "DB.php";
 
 	$perPage = 40;
-	/*
+
 	$authobj = new Auth("DB", $dsnMember, "memberLogin");
 
 	$authobj->setSessionname (CMS_MEMBER_SESSION);
@@ -24,7 +24,6 @@
 	}
 
 	if( $authobj->getAuth() ){
-	*/
 		$vars = GetFormVars();
 		$option = "";
 		$db = DB::connect( $dsnDB, $option );
@@ -199,5 +198,5 @@ select { font-size:20px; }
 </div>
 <?php
 		$db->disconnect();
-	//}
+	}
 ?>

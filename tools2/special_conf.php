@@ -10,7 +10,7 @@ define("CMS_ADMIN_SESSION", "TABECOMUSTAFF");
 
 $ADMIN_MAIL_ADDRESS = "joda@genkaido.jp";
 
-$dsnDB = "mysql://_tabecomu:tabecomu@mysql509.heteml.jp/_tabecomu";
+$dsnDB = "mysql://_tabecomu3:ginnosuke@mysql510.heteml.jp/_tabecomu3";
 
 //----------------------------------------------------	
 // Definition of Administrator Authentification 
@@ -18,9 +18,10 @@ $dsnDB = "mysql://_tabecomu:tabecomu@mysql509.heteml.jp/_tabecomu";
 
 $dsnAdmin = array( 
 	"dsn" => $dsnDB,
-	"table" => "staff_data",
-	"usernamecol" => "STAFF_ID",
-	"passwordcol" => "STAFF_PASS_MD5"
+	"table" => "shop",
+	"usernamecol" => "shop_login_id",
+	"passwordcol" => "shop_password",
+	"cryptType" => "none"
 );
 
 function adminLogin($username,$status){
@@ -33,14 +34,15 @@ define("CMS_MEMBER_SESSION", "TABECOMUMEMBER");
 
 $dsnMember = array( 
 	"dsn" => $dsnDB,
-	"table" => "client_data",
-	"usernamecol" => "LOGIN_ID",
-	"passwordcol" => "LOGIN_PASS_MD5",
+	"table" => "shop",
+	"usernamecol" => "shop_login_id",
+	"passwordcol" => "shop_password",
+	"cryptType" => "none",
         "db_fields"=>"*"
 );
 
 function memberLogin($username,$status){
-	header( "Location:./member_login.php?status=".$status );
+	header( "Location:http://gtl.jp/asp/tabecomu2/login.php" );
 }
 //----------------------------------------------------	
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-	$pathForRoot = "./";
+	$pathForRoot = "../";
 
 	require_once $pathForRoot."tools/special_conf.php";
 	require_once $pathForRoot."tools/system_tools.php";
@@ -31,38 +31,31 @@
 
 			$user_data = $db->getRow( "select * from user_data where RECORD_ID=".$vars["USER_ID"], DB_FETCHMODE_ASSOC );
 
-			$query = "select * from proc_data where USER_ID=".$vars["USER_ID"]." and ENTRY_TIME like '".date("Y-m-d")."%'";
-			$today_data = $db->getAll( $query, DB_FETCHMODE_ASSOC );
-			$today_total = 0;
-			foreach( $today_data as $tmp ){
-				$today_total += $tmp["PRICE"];
-			}
-
-			$query = "insert into proc_data values (0, ".$vars["USER_ID"].",'".date( "Y-m-d H:i:s" )."', 0,".$vars["CAT"].",".$vars["TOTAL"].",1)";
-			$db->query( $query ); 
-			$today_total += $vars["CAT"] * 1;
-			$user_data["BALANCE"] = ( $user_data["BALANCE"] * 1 + $vars["CAT"] * 1 );
-			$query = "update user_data set BALANCE = ".$user_data["BALANCE"]." where RECORD_ID=".$vars["USER_ID"];
-			$db->query( $query ); 
-
 			$db->disconnect();
 ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<div style="width:100%;text-align:center;">
-<br />
-ありがとうございました。<br />
-<br />
-<?php print date("Y/m/d H:i"); ?><br />
-<br />
+<script>
+function goProc2(cat){
+	$('#cat_area').css( 'overflow', 'hidden' );
+	$('#cat_area').height(0);
+	$('#result_area').load('http://gtl.jp/asp/tabecomu2/mobile/result_proc.php?SHOP_ID=<?php print $vars["SHOP_ID"]; ?>&USER_ID=<?php print $vars["USER_ID"]; ?>&CAT=<?php print $vars["CAT"]; ?>&TOTAL=<?php print $vars["TOTAL"]; ?>');
+}
+</script>
+<div style="width:100%;text-align:center;font-size:20px;">
+<div id="cat_area" style="width:100%;text-align:center;font-size:30px;">
+
 <table border="0" align="center" style="font-size:30px;">
 <tr><td align="right">お会計　</td><td align="right">￥<?php print number_format( $vars["TOTAL"]*1 ); ?></td></tr>
 <tr><td align="right">割引　</td><td align="right">￥<?php print number_format( $vars["CAT"]*1 ); ?></td></tr>
 <tr><td align="right">お支払　</td><td align="right">￥<?php print number_format( $vars["TOTAL"]*1 - $vars["CAT"]*1 ); ?></td></tr>
 </table>
---------------------------------------<br />
-食べコミュ残高 ￥<?php print number_format( $user_data["P_LIMIT"]*1 - $user_data["BALANCE"]*1 ); ?><br />
 <br />
-<button class="btn" onclick="javascript:BackProc3();">終了する</botton>
+金額をご確認ください。<br />
+<br />
+<button class="btn" onclick="javacript:goProc2();">OK</button><br />
+<button class="btn" onclick="javacript:backProc();">訂正</button><br />
+</div>
+<div id="result_area"></div>
 </div>
 <?php
 		$db->disconnect();

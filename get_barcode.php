@@ -30,49 +30,52 @@
 		$db = DB::connect( $dsnDB, $option );
 			$db->query( "SET NAMES UTF8" );
 
-			$item_data = $db->getAll( "select * from item_data where SHOP_ID=1 limit 20", DB_FETCHMODE_ASSOC );
+			$shop_data = $db->getRow( "select * from shop where shop_code='".$vars["shop_code"]."'", DB_FETCHMODE_ASSOC );
 
 			$db->disconnect();
 
 
 ?>
 <style type="text/css">
-.btn {
-	background: -moz-linear-gradient(top,#FFF 0%,#E6E6E6);
-	background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#E6E6E6));
-	border: 2px solid #DDD;
-	color: #111;
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	-moz-box-shadow: 1px 1px 1px rgba(000,000,000,0.3);
-	-webkit-box-shadow: 1px 1px 1px rgba(000,000,000,0.3);
-	width: 120px;
-	height: 80px;
-	margin: 10px 10px;
-	font-size:40px;
-}
 </style>
 <div style="width:100%;text-align:center;">
-
+<div id= "value_area">
+</div>
 <div id="cat_area" style="text-align:center;font-size:30px;">
 	<div style="width:400px; text-align:center; height:40px; margin:20px auto 40px auto;">
-		<div style="width:80px; margin:0px auto 0 10px; height:40px; border:0px black solid; float:left;font-size:20px;">会員ID</div>
-		<div style="width:180px; margin:0px auto 0 10px; height:40px; border:1px black solid; float:left;"></div>
+		<div style="width:80px; margin:0px auto 0 10px; height:40px; border:0px black solid; float:left;font-size:20px;">ID</div>
+		<div style="width:180px; margin:0px auto 0 10px; height:40px; border:1px black solid; float:left;">
+			<input type="text" id="user_code_scaned" name="user_code_scaned" onchange="javascript:alert('hoge');">
+		</div>
 		<div style="width:100px; margin:0px auto 0 10px; height:40px; border:0px black solid; float:left;">
-	<button class="btn" style="width:100px;font-size:16px; height:40px;margin:0px; padding:0px;">読み取り</button>
-</div>
+			<button class="btn_short" onclick="javascript:$('#user_code_scaned').focus();StartUserTimer();" style="width:100px;font-size:16px; height:40px;margin:0px; padding:0px;">読み取り</button>
+		</div>
 	</div>
 	<div style="clear:both;"></div>
 
 	利用額を選択してください。<br />
 	お会計　￥<?php print number_format( $vars["TOTAL"] ); ?><br />
-	<?php for( $ct = 100; $ct < 600; $ct += 100 ){ ?>
-	<button class="btn" style="font-size:20px;" onclick="javascript:goProc(<?php print $ct; ?>);"><?php print $ct; ?></button><br />
-	<?php } ?>
-</div>
 
 </div>
+<script>
+var user_timer;
+var user_code_get='';
+var user_code_bak='';
+
+function CheckUserCode(){
+	alert('hoge');
+	user_code_bak = user_code_get;
+	user_code_get = document.getElementById('user_code_scaned').value;
+	if( user_code_get != user_code_bak ){
+		alert( user_code_get );
+		clearInterval( user_timer );
+	}
+}
+
+function StartUserTimer(){
+	user_timer = window.setInterval("CheckUserCode()", 3000);
+}
+</script>
 <?php
 	//}
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-	$pathForRoot = "./";
+	$pathForRoot = "../";
 
 	require_once $pathForRoot."tools/special_conf.php";
 	require_once $pathForRoot."tools/system_tools.php";
@@ -33,12 +33,12 @@
 
 			$db->disconnect();
 ?>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
 function goProc(cat){
 	$('#cat_area').css( 'overflow', 'hidden' );
 	$('#cat_area').height(0);
-	$('#result_area').load('http://gtl.jp/asp/tabecomu/confirm_proc.php?SHOP_ID=1&USER_ID=<?php print $vars["USER_ID"]; ?>&CAT='+cat+'&TOTAL=<?php print $vars["TOTAL"]; ?>');
+	alert( 'http://gtl.jp/asp/tabecomu2/mobile/confirm_proc.php?SHOP_ID=<?php print $vars["SHOP_ID"]; ?>&USER_ID=<?php print $vars["USER_ID"]; ?>&CAT='+cat+'&TOTAL=<?php print $vars["TOTAL"]; ?>' );
+	$('#result_area').load('http://gtl.jp/asp/tabecomu2/mobile/confirm_proc.php?SHOP_ID=<?php print $vars["SHOP_ID"]; ?>&USER_ID=<?php print $vars["USER_ID"]; ?>&CAT='+cat+'&TOTAL=<?php print $vars["TOTAL"]; ?>' );
 }
 </script>
 <div style="width:100%;text-align:center;font-size:30px;">

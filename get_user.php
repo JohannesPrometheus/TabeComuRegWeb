@@ -9,6 +9,8 @@
 	require_once "Pager/Pager.php";
 	require_once "DB.php";
 
+	$perPage = 40;
+
 	$authobj = new Auth("DB", $dsnMember, "memberLogin");
 
 	$authobj->setSessionname (CMS_MEMBER_SESSION);
@@ -20,18 +22,17 @@
 			$authobj->start();
 		}
 	}
-
+	// テストだけどね。
 	//if( $authobj->getAuth() ){
 		$vars = GetFormVars();
+
 		$option = "";
 		$db = DB::connect( $dsnDB, $option );
 			$db->query( "SET NAMES UTF8" );
 
-			$query = "select order_id from `order` where shop_code='".$vars["shop_code"]."' and order_confirm_date='0000-00-00 00:00:00' and order_day like '".date("Y-m-d ")."%'";
-			$flag = $db->getOne( $query );
+			$user_data = $db->getRow( "select * from user where user_barcode='".substr( $vars["user_barcode"], 0, 7 )."'", DB_FETCHMODE_ASSOC );
+			$company_data = $db->getRow( "select * from company where company_code='".$user_data["company_code"]."'", DB_FETCHMODE_ASSOC );
 
 		$db->disconnect();
-
-		if( $flag > 0 ) print $flag;
 	//}
 ?>

@@ -2,8 +2,8 @@
 
 	$pathForRoot = "./";
 
-	require_once $pathForRoot."tools/special_conf.php";
-	require_once $pathForRoot."tools/system_tools.php";
+	require_once $pathForRoot."tools2/special_conf.php";
+	require_once $pathForRoot."tools2/system_tools.php";
 
 	require_once "Auth/Auth.php";
 	require_once "Pager/Pager.php";
@@ -30,47 +30,88 @@
 		$db = DB::connect( $dsnDB, $option );
 			$db->query( "SET NAMES UTF8" );
 
-			$item_data = $db->getAll( "select * from item_data where SHOP_ID=1 limit 20", DB_FETCHMODE_ASSOC );
+			$shop_data = $db->getRow( "select * from shop where shop_code='".$vars["shop_code"]."'", DB_FETCHMODE_ASSOC );
 
 			$db->disconnect();
 
 
 ?>
-<style type="text/css">
-.btn {
-	background: -moz-linear-gradient(top,#FFF 0%,#E6E6E6);
-	background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#E6E6E6));
-	border: 2px solid #DDD;
-	color: #111;
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	-moz-box-shadow: 1px 1px 1px rgba(000,000,000,0.3);
-	-webkit-box-shadow: 1px 1px 1px rgba(000,000,000,0.3);
-	width: 120px;
-	height: 80px;
-	margin: 10px 10px;
-	font-size:40px;
-}
-</style>
-<div style="width:100%;text-align:center;">
-
 <div id="cat_area" style="text-align:center;font-size:30px;">
 	<div style="width:100%; text-align:center; height:40px; margin:20px auto 40px auto; virtical-align:middle;">
-		<span style="font-size:16px;">会員ID</span>
-		<input type="text" id="user_id" name="user_id" style="width:200px;" onFocus="javascript:alert('hoge');">
-		<button class="btn_short" style="font-size:16px;width:160px;height:50px;" onclick="javascript:document.getElementById('user_id').focus();">読み取り</button>
+		<span style="font-size:16px;">ID</span>
+		<input type="text" id="user_code_scaned" name="user_code_scaned" style="width:200px;">
+		<button class="btn_short" style="font-size:16px;width:160px;height:50px;" onclick="javascript:document.getElementById('user_code_scaned').focus();document.getElementById('user_code_scaned').text='';document.getElementById('user_code_scaned').value='';StartUserTimer();">読み取り</button>
 	</div>
 	<div style="clear:both;"></div>
 
-	利用額を選択してください。<br />
+	利用額を選択してください<br />
 	お会計　￥<?php print number_format( $vars["TOTAL"] ); ?><br />
-	<?php for( $ct = 100; $ct < 600; $ct += 100 ){ ?>
-	<button class="btn_short" style="font-size:20px;" onclick="javascript:goProc(<?php print $ct; ?>);"><?php print $ct; ?></button><br />
-	<?php } ?>
+	<form id="form2" name="form2" action="http://gtl.jp/asp/tabecomu2/result2_proc.php" method="post" target="backwindow">
+		<input type="hidden" id="shop_code" name="shop_code" value="<?php print $vars["shop_code"]; ?>">
+		<input type="hidden" id="total" name="total" value="<?php print $vars["TOTAL"]; ?>">
+		<input type="hidden" id="cat" name="cat">
+		<input type="hidden" id="user_code" name="user_code">
+		<div id="value_area" name="value_area"></div>
+	</form>
+	<iframe name="backwindow" id="backwindow" style="border:none;width:1px;height:1px;"></iframe>
 </div>
+</div>
+<script>
 
-</div>
+
+var user_timer;
+var user_code_get='';
+var user_code_bak='';
+
+
+var resultTimer;
+
+
+function CheckUserCode(){
+	user_code_bak = user_code_get;
+	user_code_get = document.getElementById('user_code_scaned').value;
+	if( user_code_get != user_code_bak ){
+		clearInterval( user_timer );
+		$('#value_area').load('http://gtl.jp/asp/tabecomu2/get_user.php?user_barcode='+user_code_get);
+		gofProc(100);
+	}
+}
+
+function StartUserTimer(){
+	user_code_get='';
+	user_code_bak='';
+	user_timer = window.setInterval("CheckUserCode()", 500);
+}
+
+function ResultWin(){
+	var doc = document.getElementsByTagName("iframe")[1].contentWindow.document;
+	var tmp_oid = doc.body.innerHTML;
+
+	$('#scan_area').css('overflow','hidden');
+	$('#scan_area').height(0);
+	$('#result_area').height(heightBuffer);
+	$('#result_area').load('http://gtl.jp/asp/tabecomu2/done_confirm.php?order_id=' + tmp_oid );
+
+}
+
+function gofProc(cat){
+	clearInterval(mytimer);
+
+	resultTimer = window.setTimeout('ResultWin()', 1000 );
+
+	var frm = document.getElementById('form2');
+	document.getElementById('cat').value = cat;
+	document.getElementById('user_code').value = user_code_get;
+	frm.submit();
+
+}
+
+document.getElementById('user_code_scaned').focus();
+document.getElementById('user_code_scaned').text='';
+document.getElementById('user_code_scaned').value='';
+StartUserTimer();
+
+</script>
 <?php
 	//}
 ?>
