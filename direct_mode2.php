@@ -90,8 +90,7 @@ function TenkeyProc(c){
 		$('#calc_area').css('overflow','hidden');
 		$('#calc_area').height(0);
 		$('#code_area').height(heightBuffer);
-		$('#disp_code_area').load('http://gtl.jp/asp/tabecomu/disp_barcode.php?SHOP_ID=1&TOTAL='+totalStr);
-		$('#qr_price').html('金額　￥'+totalDispStr );
+		$('#disp_code_area').load('http://gtl.jp/asp/tabecomu/get_barcode.php?SHOP_ID=1&TOTAL='+totalStr);
 		mytimer = setInterval("timeProc()",500);
 	}else{
 		if( c == 'AC' ){
@@ -114,14 +113,6 @@ function showHistory(){
 		$('#history_area').load('http://gtl.jp/asp/tabecomu/disp_history.php');
 }
 
-function showScan(){
-		heightBuffer =  $('#code_area').height();
-		$('#code_area').css('overflow','hidden');
-		$('#code_area').height(0);
-		$('#scan_area').height(heightBuffer);
-		$('#disp_scan_area').load('http://gtl.jp/asp/tabecomu/disp_scan.php?SHOP_ID=1&TOTAL='+totalStr);
-}
-
 function historyBack(){
 		heightBuffer =  $('#history_area').height();
 		$('#history_area').css('overflow','hidden');
@@ -134,12 +125,7 @@ function historyBack(){
 	<div id="disp_code_area">
 	</div>
 	<div id="qr_price" style="font-size:40px;"></div>
-	<button class="btn" style="width:410px;margin-top:100px; font-size:24px;" onclick="javascript:showScan();">1Dバーコードスキャン</button>
-	<button class="btn" style="width:410px;margin-top:40px;" onclick="javascript:BackProc();">訂正</button>
-</div>
-<div id="scan_area" style="text-align:center;">
-	<div id="disp_scan_area">
-	</div>
+	<button class="btn" style="width:410px;margin-top:240px;" onclick="javascript:BackProc();">訂正</button>
 </div>
 <div id="calc_area">
 	<div style="width:100%;text-align:center;">
@@ -177,8 +163,6 @@ function historyBack(){
 <script>
 	$('#code_area').css('overflow','hidden');
 	$('#code_area').height(0);
-	$('#scan_area').css('overflow','hidden');
-	$('#scan_area').height(0);
 	$('#r2_area').css('overflow','hidden');
 	$('#r2_area').height(0);
 	$('#history_area').css('overflow','hidden');
