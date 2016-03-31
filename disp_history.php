@@ -60,7 +60,7 @@
 		$query = "SELECT * FROM `shop` WHERE shop_code='".$vars["shop_code"]."'";
 		$shop_data = $db->getRow( $query, DB_FETCHMODE_ASSOC );
 
-		$query = "SELECT * FROM `order` WHERE shop_code='".$vars["shop_code"]."'";
+		$query = "SELECT * FROM `order` WHERE  order_confirm_date != '0000-00-00 00:00:00.000000' and shop_code='".$vars["shop_code"]."'";
 		if($startTime != ""){
 			$query .= "  AND order_day BETWEEN '" . $startTime . "' AND '" . $endTime."'";
 			if($companyId != ""){

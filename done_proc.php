@@ -29,24 +29,17 @@
 		$db = DB::connect( $dsnDB, $option );
 			$db->query( "SET NAMES UTF8" );
 
-			$order_data = $db->getRow( "select * from `tmp_order` where order_id=".$vars["order_id"], DB_FETCHMODE_ASSOC );
+			$order_data = $db->getRow( "select * from `order` where order_id=".$vars["order_id"], DB_FETCHMODE_ASSOC );
 			$user_data = $db->getRow( "select * from user where user_barcode='".$order_data["user_barcode"]."'", DB_FETCHMODE_ASSOC );
 
 			if( $vars["DONE_MODE"] == 1 ){
-				$query = "update `tmp_order` set order_confirm_date='".date("Y-m-d H:i:s")."' where order_id=".$vars["order_id"];
-				$db->query( $query );
-
-				$query = "select * from `tmp_order` where order_id=".$vars["order_id"];
-				$tmpdata = $db->getRow( $query, DB_FETCHMODE_ASSOC );
-
-				unset($tmpdata["order_id"]);
-
-				$result = $db->autoExecute("`order`", $tmpdata, DB_AUTOQUERY_INSERT);
-				
+				$query = "update `order` set order_confirm_date='".date("Y-m-d H:i:s")."' where order_id=".$vars["order_id"];
 			}else if( $vars["DONE_MODE"] == 2 ){
-				$query = "delete from `tmp_order` where order_id=".$vars["order_id"];
-				$db->query( $query );
+				$query = "delete from `order` where order_id=".$vars["order_id"];
 			}
+			//print "DONE_MODE: ".$vars["DONE_MODE"]."<br />";
+			//print "QUERY: ".$query."<br >";
+			$db->query( $query );
 
 			$db->disconnect();
 ?>
