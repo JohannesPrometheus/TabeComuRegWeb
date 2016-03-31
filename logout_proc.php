@@ -15,10 +15,6 @@
 
 	$authobj->start();
 
-	if( array_key_exists( "logoutProc", $_GET ) ){
-		if( $_GET["logoutProc"] == "yes" ){
-			$authobj->logout();
-			$authobj->start();
-		}
-	}
+	$authobj->logout();
 ?>
+ログアウト完了

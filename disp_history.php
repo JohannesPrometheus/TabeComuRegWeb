@@ -2,14 +2,13 @@
 
 	$pathForRoot = "./";
 
-	require_once $pathForRoot."tools2/special_conf.php";
-	require_once $pathForRoot."tools2/system_tools.php";
+	require_once $pathForRoot."tools/special_conf.php";
+	require_once $pathForRoot."tools/system_tools.php";
 
 	require_once "Auth/Auth.php";
 	require_once "Pager/Pager.php";
 	require_once "DB.php";
 
-	$perPage = 40;
 	/*
 	$authobj = new Auth("DB", $dsnMember, "memberLogin");
 
@@ -26,6 +25,8 @@
 	if( $authobj->getAuth() ){
 	*/
 		$vars = GetFormVars();
+
+		$PAGE_ROWS = 10;
 
 		$option = "";
 		$db = DB::connect( $dsnDB, $option );
@@ -46,11 +47,15 @@
 			}
 		}
 		if(isset($vars['TIME_START_YEAR'])) {
-			$startTime = $vars['TIME_START_YEAR'] . "-" . $vars['TIME_START_MONTH'] . "-" . $vars['TIME_START_DAY'];
+			$startTime = $vars['TIME_START_YEAR'] . "-" . $vars['TIME_START_MONTH'] . "-" . $vars['TIME_START_DAY']." 00:00:00";
 		}
 		if(isset($vars['TIME_END_YEAR'])) {
-			$endTime = $vars['TIME_END_YEAR'] . "-" . $vars['TIME_END_MONTH'] . "-" . $vars['TIME_END_DAY'];
+			$endTime = $vars['TIME_END_YEAR'] . "-" . $vars['TIME_END_MONTH'] . "-" . $vars['TIME_END_DAY']." 23:59:59";
 		}
+		if( $startTime == "" ){
+			$startTime = date( "Y-m-d" )." 00:00:00";
+		}
+		if( $endTime == "" ) $endTime = date( "Y-m-d" )." 23:59:59";
 
 		$query = "SELECT * FROM `shop` WHERE shop_code='".$vars["shop_code"]."'";
 		$shop_data = $db->getRow( $query, DB_FETCHMODE_ASSOC );
@@ -76,7 +81,7 @@
 
 		// ページングの設定
 		$params = array(
-				"perPage"=>5,
+				"perPage"=>$PAGE_ROWS,
 				"itemData" => $allData
 		);
 		
@@ -85,10 +90,6 @@
 		$item_data = $pager->GetPageData();
 		$db->disconnect();
 
-		if( $startTime == "" ){
-			$startTime = date("Y-m-d", strtotime( date( "Y-m-d" )." - 1year" ) );
-		}
-		if( $endTime == "" ) $endTime = date( "Y-m-d" );
 ?>
 <!DOCTYPE html>
 <html>
@@ -135,70 +136,74 @@ function ChangeMonthLastDay(str){
       <img src="images/logo.jpg" alt="食べコミュ" width="120">
     </div>-->
 
-<form id="form1" name="form1" method="post" action="http://gtl.jp/asp/tabecomu4/disp_history.php" target="history_window">
+<form id="form1" name="form1" method="post" action="<?php print URL_ROOT; ?>disp_history.php" target="history_window">
 <input type="hidden" id="shop_code" name="shop_code" value="<?php print $vars["shop_code"]; ?>">
     
-    <div class="price_box" style="width:500px;margin-bottom:0px;">
-<div style="font-size:20px;margin-bottom:20px;"><?php print $shop_data["shop_name"]; ?>さま</div>
-<div style="font-size:24px;margin-bottom:20px;">ご利用履歴</div>
+    <div class="price_box" style="width:500px;margin-bottom:0px;margin-top:0px;">
+	<div style="font-size:20px;margin-bottom:10px;"><?php print $shop_data["shop_name"]; ?>さま</div>
+	<div style="font-size:24px;margin-bottom:20px;">ご利用履歴</div>
 
-		<p><select id="TIME_START_YEAR" name="TIME_START_YEAR" onchange="ChangeMonthLastDay('START');">
-		<?php for( $ct = 2014; $ct < 2017; $ct ++  ){ ?>
-		<option value="<?php print sprintf( "%04d", $ct ); ?>"<?php if( date("Y", strtotime($startTime) ) == sprintf( "%04d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%04d", $ct ); ?></option>
-		<?php } ?>
-		</select>/
-		<select id="TIME_START_MONTH" name="TIME_START_MONTH" onchange="ChangeMonthLastDay('START');">
-		<?php for( $ct = 1; $ct < 13; $ct ++  ){ ?>
-		<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("m", strtotime($startTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
-		<?php } ?>
-		</select>/
-		<select id="TIME_START_DAY" name="TIME_START_DAY">
-		<?php for( $ct = 1; $ct < 32; $ct ++  ){ ?>
-		<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("d", strtotime($startTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
-		<?php } ?>
-		</select><span class="font_14">より</span>
+	<p><select id="TIME_START_YEAR" name="TIME_START_YEAR" onchange="ChangeMonthLastDay('START');">
+	<?php for( $ct = 2014; $ct < 2017; $ct ++  ){ ?>
+	<option value="<?php print sprintf( "%04d", $ct ); ?>"<?php if( date("Y", strtotime($startTime) ) == sprintf( "%04d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%04d", $ct ); ?></option>
+	<?php } ?>
+	</select>/
+	<select id="TIME_START_MONTH" name="TIME_START_MONTH" onchange="ChangeMonthLastDay('START');">
+	<?php for( $ct = 1; $ct < 13; $ct ++  ){ ?>
+	<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("m", strtotime($startTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
+	<?php } ?>
+	</select>/
+	<select id="TIME_START_DAY" name="TIME_START_DAY">
+	<?php for( $ct = 1; $ct < 32; $ct ++  ){ ?>
+	<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("d", strtotime($startTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
+	<?php } ?>
+	</select><span class="font_14">より</span>
                 </p>
-		<p><select id="TIME_END_YEAR" name="TIME_END_YEAR" onchange="ChangeMonthLastDay('END');">
-		<?php for( $ct = 2014; $ct < 2017; $ct ++  ){ ?>
-		<option value="<?php print sprintf( "%04d", $ct ); ?>"<?php if( date("Y", strtotime($endTime) ) == sprintf( "%04d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%04d", $ct ); ?></option>
-		<?php } ?>
-		</select>/
-		<select id="TIME_END_MONTH" name="TIME_END_MONTH" onchange="ChangeMonthLastDay('END');">
-		<?php for( $ct = 1; $ct < 13; $ct ++  ){ ?>
-		<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("m", strtotime($endTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
-		<?php } ?>
-		</select>/
-		<select id="TIME_END_DAY" name="TIME_END_DAY">
-		<?php for( $ct = 1; $ct < 32; $ct ++  ){ ?>
-		<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("d", strtotime($endTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
-		<?php } ?>
-		</select><span class="font_14">まで</span>
+	<p><select id="TIME_END_YEAR" name="TIME_END_YEAR" onchange="ChangeMonthLastDay('END');">
+	<?php for( $ct = 2014; $ct < 2017; $ct ++  ){ ?>
+	<option value="<?php print sprintf( "%04d", $ct ); ?>"<?php if( date("Y", strtotime($endTime) ) == sprintf( "%04d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%04d", $ct ); ?></option>
+	<?php } ?>
+	</select>/
+	<select id="TIME_END_MONTH" name="TIME_END_MONTH" onchange="ChangeMonthLastDay('END');">
+	<?php for( $ct = 1; $ct < 13; $ct ++  ){ ?>
+	<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("m", strtotime($endTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
+	<?php } ?>
+	</select>/
+	<select id="TIME_END_DAY" name="TIME_END_DAY">
+	<?php for( $ct = 1; $ct < 32; $ct ++  ){ ?>
+	<option value="<?php print sprintf( "%02d", $ct ); ?>"<?php if( date("d", strtotime($endTime) ) == sprintf( "%02d", $ct ) ){ print " selected"; } ?>><?php print sprintf( "%02d", $ct ); ?></option>
+	<?php } ?>
+	</select><span class="font_14">まで</span>
 
     </div>
         
     
-    <div class="btn_scan_box">
-      <button class="btn btn_scan font_14" type="submit">ご利用履歴表示</button>
+    <div class="btn_scan_box" style="margin-top:0px; margin-bottom:20px;">
+      <button class="btn btn_scan font_14" type="submit" style="font-size:18px;font-weight:bold;">ご利用履歴表示</button>
     </div>
 
 </form>
     
-    <div class="price_box" style="width:400px;">
-      <table class="total font_14" style="width:400px;">
+    <div class="price_box" style="width:400px;margin-top:0px; margin-bottom:20px;">
+      <table class="total font_14" style="width:400px;margin-top:0px; margin-bottom:0px;">
         <tr>
-        <th>ご利用金額総計</th>
-        <td style="text-align:right;margin-right:10px;"><?php print number_format( $total ); ?></th>
+        <th style="font-size:18px;">ご利用件数</th>
+        <td style="font-size:20px;text-align:right;margin-right:10px;"><?php print number_format( count( $allData ) ); ?> 件</th>
         </tr>
         <tr>
-          <th>売掛計</th>
-          <td style="text-align:right;margin-right:10px;"><?php print number_format( $urikake ); ?></td>
+        <th style="font-size:18px;">ご利用金額総計</th>
+        <td style="font-size:20px;text-align:right;margin-right:10px;"><?php print number_format( $total ); ?> 円</th>
+        </tr>
+        <tr>
+          <th style="font-size:18px;">売掛計</th>
+          <td style="font-size:20px;text-align:right;margin-right:10px;"><?php print number_format( $urikake ); ?> 円</td>
         </tr>
       </table>
       
     </div>
     
-    <div class="sum_box">
-      <table class="total font_14 sum" style="font-size:16px;">
+    <div class="sum_box" style="margin-top:0px; margin-bottom:10px;">
+      <table class="total font_14 sum" style="font-size:16px; margin-bottom:0px;">
         <tr>
         <th style="padding:4px;width:100px;text-align:center;">日時</th>
         <th style="padding:4px;width:40px;">決済ID</th>
@@ -222,12 +227,13 @@ function ChangeMonthLastDay(str){
 	?>
       </table>
       
-      <div class="pg_box">
+      <div class="pg_box" style="margin-top:14px; margin-bottom:0px;">
         <ul>
-          <li><button class="btn btn_pg" onclick="javascript:window.open('disp_history.php?<?php reset( $vars ); while( list( $key, $val ) = each( $vars ) ) { if( $key != "pageID" ){ print "&".$key."=".$val; } } ?>&pageID=<?php print $pager->getPreviousPageID(); ?>','_self');">前の5件</button></li>
+<?php if( $pager->isFirstPage( $pager->getPreviousPageID() ) ){ $str = "hidden"; }else{ $str = "visible"; } ?>
+          <li style="visibility:<?php print $str; ?>"><button class="btn btn_pg" onclick="javascript:window.open('disp_history.php?<?php reset( $vars ); while( list( $key, $val ) = each( $vars ) ) { if( $key != "pageID" ){ print "&".$key."=".$val; } } ?>&pageID=<?php print $pager->getPreviousPageID(); ?>','_self');">前の<?php print $PAGE_ROWS; ?>件</button></li>
           <li class="pg_total"><?php print $pager->getCurrentPageID(); ?>/<?php print $pager->numPages(); ?></li>
-          <li><button class="btn btn_pg" onclick="javascript:window.open('disp_history.php?<?php reset( $vars ); while( list( $key, $val ) = each( $vars ) ) { if( $key != "pageID" ){ print "&".$key."=".$val; } } ?>&pageID=<?php print $pager->getNextPageID(); ?>','_self');">次の5件</button></li>
-<!--<li><a href="test.php">　</a></li>//-->
+<?php if( $pager->isLastPage( $pager->getNextPageID() ) ){ $str = "hidden"; }else{ $str = "visible"; } ?>
+          <li style="visibility:<?php print $str; ?>"><button class="btn btn_pg" onclick="javascript:window.open('disp_history.php?<?php reset( $vars ); while( list( $key, $val ) = each( $vars ) ) { if( $key != "pageID" ){ print "&".$key."=".$val; } } ?>&pageID=<?php print $pager->getNextPageID(); ?>','_self');">次の<?php print $PAGE_ROWS; ?>件</button></li>
         </ul>
       </div>
        

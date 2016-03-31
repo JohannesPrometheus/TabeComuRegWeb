@@ -21,4 +21,14 @@
 			$authobj->start();
 		}
 	}
+
+	if( $authobj->getAuth() ){
+?>
+OK
+<?php
+	}else{
+?>
+NG
+<?php
+	}
 ?>

@@ -2,8 +2,8 @@
 
 	$pathForRoot = "./";
 
-	require_once $pathForRoot."tools2/special_conf.php";
-	require_once $pathForRoot."tools2/system_tools.php";
+	require_once $pathForRoot."tools/special_conf.php";
+	require_once $pathForRoot."tools/system_tools.php";
 
 	require_once "Auth/Auth.php";
 	require_once "Pager/Pager.php";
@@ -57,7 +57,7 @@
     <div class="price_box">
       <p>
 	ご利用金額　￥<?php print number_format( $vars["TOTAL"] ); ?><br />
-	<form id="form2" name="form2" action="http://gtl.jp/asp/tabecomu4/result2_proc.php" method="post" target="backwindow">
+	<form id="form2" name="form2" action="<?php print URL_ROOT; ?>result2_proc.php" method="post" target="backwindow">
 		<input type="hidden" id="shop_code" name="shop_code" value="<?php print $vars["shop_code"]; ?>">
 		<input type="hidden" id="total" name="total" value="<?php print $vars["TOTAL"]; ?>">
 		<input type="hidden" id="cat" name="cat">
@@ -75,6 +75,8 @@ var resultTimer;
 var user_code_get;
 
 function InputUserCode(){
+          
+	NetworkCheck();
 
 	var user_code_tmp = document.getElementById('user_code_scaned').value;
 	
@@ -82,6 +84,9 @@ function InputUserCode(){
 		document.getElementById('user_code_scaned').value = document.getElementById('user_code_scaned_hide').value;
 	}
 	user_code_get = document.getElementById('user_code_scaned').value;
+
+	var doc = document.getElementsByTagName("iframe")[1].contentWindow.document;
+	doc.body.innerHTML="";
 
 	var frm = document.getElementById('form2');
 	document.getElementById('cat').value = 0;
@@ -96,40 +101,51 @@ function InputUserCode(){
 
 function ResultWin(){
 
+	NetworkCheck();
+
 	clearTimeout(resultTimer);
 
 	var doc = document.getElementsByTagName("iframe")[1].contentWindow.document;
 	var tmp_oid = doc.body.innerHTML;
-	if( tmp_oid < 0 ){
-		// エラー終了
-		if( tmp_oid == "-1" ){
-			alert("入力されたコードが正しくありません\nコードをご確認ください。");
-		}else if( tmp_oid == "-2" ){
-			alert("既に今月の食べコミュ利用回数の\n上限に達しています。");
-		}else if( tmp_oid == "-3" ){
-			alert("既に本日の食べコミュ利用回数の\n上限に達しています。");
-		}
-		document.getElementById('user_code_scaned').text='';
-		document.getElementById('user_code_scaned').value='';
-		document.getElementById('user_code_scaned_hide').readOnly = true;
-		document.getElementById('user_code_scaned_hide').focus();
-		document.getElementById('user_code_scaned_hide').text='';
-		document.getElementById('user_code_scaned_hide').value='';
-		document.getElementById('user_code_scaned_hide').readOnly = false;
 
-		$('#result_area').show();
+	if(tmp_oid==""){
+		alert("ネットワークに接続されていません。");
+		showMenu();
 	}else{
-		$('#scan_area').css('overflow','hidden');
-		$('#scan_area').height(0);
+		if( tmp_oid < 0 ){
+			// エラー終了
+			if( tmp_oid == "-1" ){
+				alert("入力されたコードが正しくありません\nコードをご確認ください。");
+			}else if( tmp_oid == "-2" ){
+				alert("既に今月の食べコミュ利用回数の\n上限に達しています。");
+			}else if( tmp_oid == "-3" ){
+				alert("既に本日の食べコミュ利用回数の\n上限に達しています。");
+			}else if( tmp_oid == "-4" ){
+				alert("店舗IDが正しく取得できませんでした。");
+				showMenu();
+			}
+			document.getElementById('user_code_scaned').text='';
+			document.getElementById('user_code_scaned').value='';
+			document.getElementById('user_code_scaned_hide').readOnly = true;
+			document.getElementById('user_code_scaned_hide').focus();
+			document.getElementById('user_code_scaned_hide').text='';
+			document.getElementById('user_code_scaned_hide').value='';
+			document.getElementById('user_code_scaned_hide').readOnly = false;
+			$('#result_area').show();
+		}else{
+			focusfixFlag = false;
 
-		$('#result_area').load('http://gtl.jp/asp/tabecomu4/done_confirm.php?order_id=' + tmp_oid );
-		$('#result_area').height(heightBuffer);
-	        $("#result_area").delay(1000);
-	        $("#result_area").fadeIn(500);
+			$('#scan_area').css('overflow','hidden');
+			$('#scan_area').height(0);
+
+			$('#result_area').load('<?php print URL_ROOT; ?>done_confirm.php?order_id=' + tmp_oid );
+			$('#result_area').height(heightBuffer);
+		        $("#result_area").delay(1000);
+		        $("#result_area").fadeIn(500);
+		}
 	}
 
 }
-
 function InitResultWin(){
 	var doc = document.getElementsByTagName("iframe")[1].contentWindow.document;
 	doc.body.innerHTML="";
@@ -145,6 +161,26 @@ document.getElementById('user_code_scaned_hide').readOnly = false;
 
 
 InitResultWin();
+
+function FocusCheck(){
+	var tmpfid  = $(':focus').attr('id');
+
+	if(focusfixFlag){
+		if( tmpfid != 'user_code_scaned' && tmpfid != 'user_code_scaned_hide' ){
+			$('#user_code_scaned_hide').attr('readonly',true);
+			$('#user_code_scaned_hide').focus();
+			$('#user_code_scaned_hide').attr('readonly',false);
+		}
+	}
+}
+
+$('#user_code_scaned').blur(function(){
+	setTimeout(FocusCheck,500);
+});
+
+$('#user_code_scaned_hide').blur(function(){
+	setTimeout(FocusCheck,500);
+});
 
 </script>
 <?php

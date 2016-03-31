@@ -2,8 +2,8 @@
 
 	$pathForRoot = "./";
 
-	require_once $pathForRoot."tools2/special_conf.php";
-	require_once $pathForRoot."tools2/system_tools.php";
+	require_once $pathForRoot."tools/special_conf.php";
+	require_once $pathForRoot."tools/system_tools.php";
 
 	require_once "Auth/Auth.php";
 	require_once "Pager/Pager.php";
@@ -29,7 +29,7 @@
 		$db = DB::connect( $dsnDB, $option );
 			$db->query( "SET NAMES UTF8" );
 
-			$order_data = $db->getRow( "select * from `order` where order_id=".$vars["order_id"], DB_FETCHMODE_ASSOC );
+			$order_data = $db->getRow( "select * from `tmp_order` where order_id=".$vars["order_id"], DB_FETCHMODE_ASSOC );
 
 			$user_data = $db->getRow( "select * from user where user_code='".$order_data["user_code"]."'", DB_FETCHMODE_ASSOC );
 

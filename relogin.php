@@ -21,4 +21,24 @@
 			$authobj->start();
 		}
 	}
+
+
+	if( $authobj->getAuth() ){
+
+		$myid		= $authobj->getAuthData("shop_id");
+
+		$option = "";
+		$db = DB::connect( $dsnDB, $option );
+		$db->query( "SET NAMES UTF8" );
+
+		$query = "select * from shop where shop_id=".$myid;
+		$data = $db->getRow($query, DB_FETCHMODE_ASSOC);
+?>
+OK|<?php print $data["shop_code"]; ?>|<?php print $data["shop_password"] ?>
+<?php
+	}else{
+?>
+ERROR
+<?php
+	}
 ?>
